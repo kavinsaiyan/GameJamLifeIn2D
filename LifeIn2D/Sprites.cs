@@ -76,6 +76,10 @@ namespace LifeIn2D
         {
             _spriteBatch.DrawCircle(position, radius, sides, color, 1, 0);
         }
+        public void DrawRectangle(Vector2 position, float width, float height, Color color)
+        {
+            _spriteBatch.DrawRectangle(position.X, position.Y, width, height, color, 1, 0);
+        }
         public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
         {
             _spriteBatch.DrawString(spriteFont, text, position, color);
