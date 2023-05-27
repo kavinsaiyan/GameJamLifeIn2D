@@ -20,6 +20,8 @@ namespace SimplePhysics
         private bool aabbUpdateRequired;
         private Vector2 force;
         private AABB aabb;
+        private bool useGravity = true;
+        public bool UseGravity { get => useGravity; set => useGravity = value; }
 
         public readonly float Density;
         public readonly float Mass;
@@ -126,12 +128,14 @@ namespace SimplePhysics
             if (IsStatic)
                 return;
             time /= iterations;
-            //Vector2 acceleration = force * InvMass;
-            //linearVelocity += acceleration * time;
-            linearVelocity += gravity * time;
+            Vector2 acceleration = force * InvMass;
+            // System.Console.WriteLine("acc : " + acceleration);
+            linearVelocity += acceleration * time;
+            if (useGravity)
+                linearVelocity += gravity * time;
             position += linearVelocity * time;
             angle += angularVelocity * time;
-            // linearVelocity *= 0.99f;
+            linearVelocity *= 0.99f; // for friction
             force = Vector2.Zero;
             transformUpdateRequired = true;
             aabbUpdateRequired = true;
