@@ -13,10 +13,10 @@ namespace LifeIn2D
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Sprites _sprites;
-        private Texture2D _simpleHeart;
         private PhysicsWorld _world;
         private Entity _player;
         private List<Entity> _entities;
+        private List<TriggerEntity> _triggerEntities;
 
         public Game1()
         {
@@ -29,6 +29,7 @@ namespace LifeIn2D
         {
             _world = new PhysicsWorld();
             _entities = new List<Entity>();
+            _triggerEntities = new List<TriggerEntity>();
             base.Initialize();
         }
 
@@ -36,13 +37,32 @@ namespace LifeIn2D
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _sprites = new Sprites(this);
-            _simpleHeart = Content.Load<Texture2D>("SimpleHeart");
+            Texture2D simpleHeart = Content.Load<Texture2D>("SimpleHeart");
 
             Texture2D playerSprite = Content.Load<Texture2D>("Player");
             _player = new Entity(_world, 32, 32, false, new Vector2(100, 100), playerSprite);
             _player.spriteScale = Vector2.One / 2f;
             _player.body.UseGravity = false;
             _entities.Add(_player);
+
+            Entity testinCol = new Entity(_world, 64, 64, true, new Vector2(200, 200), null);
+            _entities.Add(testinCol);
+
+            _triggerEntities.Add(new TriggerEntity(Vector2.Zero, simpleHeart, 64, 64) { entityID = EntityID.Heart });
+            _triggerEntities.Add(new TriggerEntity(new Vector2(800 - 64, 640 - 64), simpleHeart, 64, 64) { entityID = EntityID.Brain });
+
+            for (int i = 0; i < _triggerEntities.Count; i++)
+            {
+                _triggerEntities[i].OnStay += OnEnter;
+            }
+        }
+
+        private void OnEnter(EntityID entityID)
+        {
+            if (entityID == EntityID.Heart)
+            {
+                Console.WriteLine(entityID + " was touched " + System.DateTime.Now);
+            }
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,8 +79,17 @@ namespace LifeIn2D
             if (CustomKeyboard.Instance.IsKeyDown(Keys.A) || CustomKeyboard.Instance.IsKeyDown(Keys.Left)) { movement.X--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.D) || CustomKeyboard.Instance.IsKeyDown(Keys.Right)) { movement.X++; }
             // Console.WriteLine("movmet : " + movement + " INv mass " + _player.body.InvMass);
-            _player.body.AddForce(movement * 100000 / 0.016f);
+            _player.body.AddForce(movement * 10000 / 0.016f);
+            // _player.body.Move(movement);
+            for (int i = 0; i < _entities.Count; i++)
+            {
+                _entities[i].Update();
+            }
 
+            for (int i = 0; i < _triggerEntities.Count; i++)
+            {
+                _triggerEntities[i].Check(_player);
+            }
             base.Update(gameTime);
         }
 
@@ -69,11 +98,14 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
-            _sprites.Draw(_simpleHeart, Vector2.Zero, Vector2.Zero, Color.White);
-            _sprites.Draw(_simpleHeart, Vector2.Zero, new Vector2(800 - 64, 480 - 64), Color.White);
             for (int i = 0; i < _entities.Count; i++)
             {
                 _entities[i].Draw(_sprites);
+            }
+
+            for (int i = 0; i < _triggerEntities.Count; i++)
+            {
+                _triggerEntities[i].Draw(_sprites);
             }
             _sprites.End();
 
