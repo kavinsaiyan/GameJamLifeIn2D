@@ -6,7 +6,7 @@ namespace SimplePhysics
     public sealed class PhysicsWorld
     {
         public static readonly float MinBodySize = 0.01f * 0.01f;
-        public static readonly float MaxBodySize = 64f * 64f;
+        public static readonly float MaxBodySize = 256 * 256f;
 
         public static readonly float MinDensity = 0.5f;        //g/cm^3
         public static readonly float MaxDensity = 21.4f;
@@ -113,7 +113,7 @@ namespace SimplePhysics
                     SeparateBodies(bodyA, bodyB, normal * depth);
                     Collisions.GetContactPoints(bodyA, bodyB, out Vector2 contact1, out Vector2 contact2, out int count);
                     CollisionManifold contact = (new CollisionManifold(bodyA, bodyB, normal, depth, contact1, contact2, count));
-                    ResolveCollisionWithRotationAndFriction(in contact);
+                    ResolveCollision(in contact);
                 }
             }
         }

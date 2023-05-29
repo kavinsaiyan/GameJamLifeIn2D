@@ -45,11 +45,11 @@ namespace LifeIn2D
             _player.body.UseGravity = false;
             _entities.Add(_player);
 
-            Entity testinCol = new Entity(_world, 64, 64, true, new Vector2(200, 200), null);
+            Entity testinCol = new Entity(_world, 200, 64, true, new Vector2(200, 200), null);
             _entities.Add(testinCol);
 
             _triggerEntities.Add(new TriggerEntity(Vector2.Zero, simpleHeart, 64, 64) { entityID = EntityID.Heart });
-            _triggerEntities.Add(new TriggerEntity(new Vector2(800 - 64, 640 - 64), simpleHeart, 64, 64) { entityID = EntityID.Brain });
+            _triggerEntities.Add(new TriggerEntity(new Vector2(800 - 64, 680 - 64), simpleHeart, 64, 64) { entityID = EntityID.Brain });
 
             for (int i = 0; i < _triggerEntities.Count; i++)
             {
@@ -98,14 +98,13 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
-            for (int i = 0; i < _entities.Count; i++)
-            {
-                _entities[i].Draw(_sprites);
-            }
-
             for (int i = 0; i < _triggerEntities.Count; i++)
             {
                 _triggerEntities[i].Draw(_sprites);
+            }
+            for (int i = 0; i < _entities.Count; i++)
+            {
+                _entities[i].Draw(_sprites);
             }
             _sprites.End();
 

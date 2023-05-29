@@ -39,6 +39,7 @@ namespace LifeIn2D
         public void Draw(Sprites sprites)
         {
             trigger.Draw(sprites);
+            sprites.Draw(graphic, Vector2.Zero, trigger.rect.Position, Color.White);
         }
     }
 }

@@ -136,14 +136,14 @@ namespace SimplePhysics
             position += linearVelocity * time;
             angle += angularVelocity * time;
             linearVelocity *= 0.99f; // for friction
-            force = Vector2.Zero;
+            force *= 0.80f;
             transformUpdateRequired = true;
             aabbUpdateRequired = true;
         }
 
         public void AddForce(Vector2 amount)
         {
-            force = amount;
+            force += amount;
             this.transformUpdateRequired = true;
             this.aabbUpdateRequired = true;
         }
