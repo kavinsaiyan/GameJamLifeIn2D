@@ -90,7 +90,7 @@ namespace SimplePhysics
             aabbUpdateRequired = true;
         }
 
-        public AABB GetFlatAABB()
+        public AABB GetAABB()
         {
             if (aabbUpdateRequired)
             {

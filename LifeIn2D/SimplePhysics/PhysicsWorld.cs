@@ -86,14 +86,14 @@ namespace SimplePhysics
             for (int i = 0; i < _bodyList.Count; i++)
             {
                 Rigidbody bodyA = _bodyList[i];
-                AABB bodyA_AABB = bodyA.GetFlatAABB();
+                AABB bodyA_AABB = bodyA.GetAABB();
                 for (int j = i + 1; j < _bodyList.Count; j++)
                 {
                     Rigidbody bodyB = _bodyList[j];
                     if (bodyA.IsStatic && bodyB.IsStatic)
                         continue;
 
-                    AABB bodyB_AABB = bodyB.GetFlatAABB();
+                    AABB bodyB_AABB = bodyB.GetAABB();
                     if (Collisions.Collide(bodyA_AABB, bodyB_AABB) == false)
                         continue;
                     contactPairs.Add((i, j));

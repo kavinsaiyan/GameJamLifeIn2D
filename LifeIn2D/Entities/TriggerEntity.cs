@@ -1,9 +1,8 @@
 using System;
-using LifeIn2D.SimplePhysics;
+using SimplePhysics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended;
-using SimplePhysics;
 namespace LifeIn2D
 {
     public enum EntityID
@@ -23,7 +22,7 @@ namespace LifeIn2D
 
         public TriggerEntity(Vector2 position, Texture2D graphic, int width, int height)
         {
-            trigger = new Trigger(new MonoGame.Extended.RectangleF(position.X, position.Y, width, height));
+            trigger = new Trigger(width, height, position);
             this.graphic = graphic;
 
             trigger.OnEnter += () => OnEnter?.Invoke(entityID);
@@ -33,13 +32,18 @@ namespace LifeIn2D
 
         public void Check(Entity entity)
         {
-            trigger.Check(in entity.rect);
+            trigger.Check(entity.body.GetAABB());
+        }
+
+        public void Update()
+        {
+            trigger.Update();
         }
 
         public void Draw(Sprites sprites)
         {
             trigger.Draw(sprites);
-            sprites.Draw(graphic, Vector2.Zero, trigger.rect.Position, Color.White);
+            sprites.Draw(graphic, Vector2.Zero, trigger.position, Color.White);
         }
     }
 }

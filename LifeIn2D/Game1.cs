@@ -88,6 +88,7 @@ namespace LifeIn2D
 
             for (int i = 0; i < _triggerEntities.Count; i++)
             {
+                _triggerEntities[i].Update();
                 _triggerEntities[i].Check(_player);
             }
             base.Update(gameTime);
