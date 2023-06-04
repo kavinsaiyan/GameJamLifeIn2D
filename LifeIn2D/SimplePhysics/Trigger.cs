@@ -28,8 +28,8 @@ namespace SimplePhysics
         {
             if (aabbUpdateRequired)
             {
-                Vector2 diff = new Vector2(width / 2, height / 2);
-                boundingBox = new AABB(position - diff, position + diff);
+                Vector2 dim = new Vector2(width, height);
+                boundingBox = new AABB(position, position + dim);
                 aabbUpdateRequired = false;
             }
         }
