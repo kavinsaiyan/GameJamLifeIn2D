@@ -61,7 +61,7 @@ namespace LifeIn2D
         {
             if (entityID == EntityID.Heart)
             {
-                Console.WriteLine(entityID + " was touched " + System.DateTime.Now);
+                Logger.Log(entityID + " was touched ");
             }
         }
 
@@ -78,7 +78,7 @@ namespace LifeIn2D
             if (CustomKeyboard.Instance.IsKeyDown(Keys.S) || CustomKeyboard.Instance.IsKeyDown(Keys.Down)) { movement.Y--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.A) || CustomKeyboard.Instance.IsKeyDown(Keys.Left)) { movement.X--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.D) || CustomKeyboard.Instance.IsKeyDown(Keys.Right)) { movement.X++; }
-            // Console.WriteLine("movmet : " + movement + " INv mass " + _player.body.InvMass);
+            //Logger.Log("movmet : " + movement + " INv mass " + _player.body.InvMass);
             _player.body.AddForce(movement * 10000 / 0.016f);
             // _player.body.Move(movement);
             for (int i = 0; i < _entities.Count; i++)
