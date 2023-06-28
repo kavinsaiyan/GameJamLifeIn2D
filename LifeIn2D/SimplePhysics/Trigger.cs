@@ -14,6 +14,11 @@ namespace SimplePhysics
         public Vector2 position;
         public bool isEntered;
         private bool aabbUpdateRequired = false;
+        #region Events
+        public event System.Action OnEnter;
+        public event System.Action OnExit;
+        public event System.Action OnStay;
+        #endregion
 
         public Trigger(int width, int height, Vector2 position)
         {
@@ -34,11 +39,6 @@ namespace SimplePhysics
             }
         }
 
-        #region Events
-        public event System.Action OnEnter;
-        public event System.Action OnExit;
-        public event System.Action OnStay;
-        #endregion
 
         public void Check(in AABB other)
         {
