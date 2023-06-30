@@ -1,3 +1,4 @@
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,6 +19,11 @@ namespace LifeIn2D.Entities
             _mergeDirections = mergeDirections;
             _angle = angle;
             _position = position;
+        }
+
+        public void Draw(Sprites sprites)
+        {
+            sprites.Draw(_graphic, Vector2.Zero, _position, Color.White);
         }
     }
 }
