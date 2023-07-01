@@ -13,5 +13,9 @@ namespace LifeIn2D.Entities
         Threeway_rot90 = 8,
         Threeway_rot180 = 9,
         Threeway_rot270 = 10,
+        Heart = 11,
+        Brain = 12,
+        Kidney = 13,
+        None = 14,
     }
 }

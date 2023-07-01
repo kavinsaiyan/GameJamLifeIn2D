@@ -14,11 +14,11 @@ namespace LifeIn2D.Main
 
         public int[,] grid = new int[5, 5]
         {
-            {0,0,0,0,0},
-            {0,0,0,0,0},
-            {0,0,0,0,0},
-            {0,0,0,0,0},
-            {0,0,0,0,0},
+            {11, 0 , 5 , 14, 14},
+            {14, 14, 2 , 14, 14},
+            {14, 14, 3 , 5 , 14},
+            {14, 14, 14, 1 , 14},
+            {14, 14, 14, 3 , 12},
         };
 
         public Tile[,] tileGrid;
@@ -50,7 +50,8 @@ namespace LifeIn2D.Main
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    tileGrid[i, j].Draw(sprites);
+                    if (tileGrid[i, j].Id != TileID.None)
+                        tileGrid[i, j].Draw(sprites);
                 }
             }
         }
