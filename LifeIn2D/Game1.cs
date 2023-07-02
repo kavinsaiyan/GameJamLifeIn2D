@@ -52,7 +52,7 @@ namespace LifeIn2D
 
             Vector2 movement = Vector2.Zero;
             CustomKeyboard.Instance.Update();
-            if (CustomKeyboard.Instance.IsKeyDown(Keys.W) || CustomKeyboard.Instance.IsKeyDown(Keys.Up)) { movement.Y++; }
+            if (CustomKeyboard.Instance.IsKeyClicked(Keys.W) || CustomKeyboard.Instance.IsKeyClicked(Keys.Up)) { movement.Y++; _gridManager.tileGrid[0, 1].Rotate(); }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.S) || CustomKeyboard.Instance.IsKeyDown(Keys.Down)) { movement.Y--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.A) || CustomKeyboard.Instance.IsKeyDown(Keys.Left)) { movement.X--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.D) || CustomKeyboard.Instance.IsKeyDown(Keys.Right)) { movement.X++; }
