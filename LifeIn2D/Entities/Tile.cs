@@ -1,4 +1,5 @@
 using System;
+using LifeIn2D.Main;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -34,6 +35,7 @@ namespace LifeIn2D.Entities
             for (int i = 0; i < _mergeDirections.Length; i++)
                 _mergeDirections[i] = (MergeDirection)((int)_mergeDirections[i] + 1);
             _angle += MathHelper.PiOver2;
+            _id = TileRotator.GetNextRotation(_id);
         }
 
         public void Draw(Sprites sprites)
