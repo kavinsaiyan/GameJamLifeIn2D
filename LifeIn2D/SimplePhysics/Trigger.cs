@@ -65,10 +65,25 @@ namespace SimplePhysics
             position += amount;
             aabbUpdateRequired = true;
         }
+        public void MoveTo(Vector2 amount)
+        {
+            position = amount;
+            aabbUpdateRequired = true;
+        }
+
+
 
         public void Draw(Sprites sprites)
         {
             sprites.DrawRectangle(position, width, height, Color.Green);
+        }
+
+        public bool Contains(Vector2 pos)
+        {
+            if (pos.X <= boundingBox.Max.X && pos.X >= boundingBox.Min.X
+            && pos.Y <= boundingBox.Max.Y && pos.Y >= boundingBox.Min.Y)
+                return true;
+            else return false;
         }
     }
 }
