@@ -6,6 +6,7 @@ using SimplePhysics;
 using System.Collections.Generic;
 using System;
 using LifeIn2D.Main;
+using MonoGame.Extended;
 
 namespace LifeIn2D
 {
@@ -19,8 +20,6 @@ namespace LifeIn2D
         private List<Entity> _entities;
         private List<TriggerEntity> _triggerEntities;
         private GridManager _gridManager;
-
-        private SimpleButton _button;
 
         public Game1()
         {
@@ -36,15 +35,9 @@ namespace LifeIn2D
             _triggerEntities = new List<TriggerEntity>();
             _gridManager = new GridManager();
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
-            _button = new SimpleButton(64, 64, new Vector2(200, 200));
-            _button.OnClick += OnClick;
             base.Initialize();
         }
 
-        private void OnClick()
-        {
-            Logger.Log("clicq!");
-        }
 
         protected override void LoadContent()
         {
@@ -67,7 +60,8 @@ namespace LifeIn2D
             if (CustomKeyboard.Instance.IsKeyDown(Keys.D) || CustomKeyboard.Instance.IsKeyDown(Keys.Right)) { movement.X++; }
 
             CustomMouse.Instance.Update();
-            _button.Update(CustomMouse.Instance);
+            Vector2 ingameMousePos = new Vector2(CustomMouse.Instance.WindowPosition.X, GraphicsDevice.Viewport.Height - CustomMouse.Instance.WindowPosition.Y);
+            _gridManager.Update(gameTime, ingameMousePos, CustomMouse.Instance.IsLeftButtonClicked());
 
             base.Update(gameTime);
         }
@@ -78,7 +72,6 @@ namespace LifeIn2D
 
             _sprites.Begin(false);
             _gridManager.Draw(_sprites);
-            _button.Draw(_sprites);
             _sprites.End();
 
             base.Draw(gameTime);

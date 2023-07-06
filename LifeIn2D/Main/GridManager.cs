@@ -1,4 +1,5 @@
 using LifeIn2D.Entities;
+using LifeIn2D.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
@@ -35,12 +36,25 @@ namespace LifeIn2D.Main
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    Logger.Log($"grid pos {i},{j} is {new Vector2(xPos, yPos)}");
+                    // Logger.Log($"grid pos {i},{j} is {new Vector2(xPos, yPos)}");
                     tileGrid[i, j] = TileCreator.CreateTile(grid[i, j], new Vector2(xPos, yPos), contentManager);
                     xPos += 64;
                 }
                 xPos = -cornorPos + width / 2;
                 yPos -= 64;
+            }
+        }
+
+
+        public void Update(GameTime gameTime, Vector2 mousePos, bool isMouseClicked)
+        {
+            for (int i = 0; i < tileGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < tileGrid.GetLength(1); j++)
+                {
+                    if (tileGrid[i, j].Id != TileID.None)
+                        tileGrid[i, j].Update(gameTime, mousePos, isMouseClicked);
+                }
             }
         }
 

@@ -15,11 +15,11 @@ namespace LifeIn2D.Input
             trigger = new Trigger(width, height, position);
         }
 
-        public void Update(CustomMouse mouse)
+        public void Update(Vector2 mousePos, bool isMouseClicked)
         {
             trigger.Update();
-            if (trigger.Contains(mouse.WindowPosition.ToVector2()) &&
-                mouse.IsLeftButtonClicked())
+            // Logger.Log("trigger  min " + trigger.boundingBox.Min + " max " + trigger.boundingBox.Max);
+            if (trigger.Contains(mousePos) && isMouseClicked)
             {
                 OnClick?.Invoke();
             }

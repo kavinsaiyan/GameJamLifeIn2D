@@ -12,21 +12,15 @@ namespace LifeIn2D.Input
         {
             get { return lazy.Value; }
         }
-        public Point MouseWindowPosition
-        {
-            get
-            {
-                return _currentMouseState.Position;
-            }
-        }
+
         private MouseState _prevMouseState;
         private MouseState _currentMouseState;
 
-        public Point WindowPosition
+        public Vector2 WindowPosition
         {
             get
             {
-                return _currentMouseState.Position;
+                return _currentMouseState.Position.ToVector2();
             }
         }
 
