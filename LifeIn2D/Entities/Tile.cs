@@ -13,11 +13,15 @@ namespace LifeIn2D.Entities
         private Texture2D _graphic;
         private TileID _id;
         public TileID Id { get => _id; }
+
         private Vector2 _origin;
         private MergeDirection[] _mergeDirections;
+        public MergeDirection[] MergeDirections => _mergeDirections;
         private float _angle;
         private Vector2 _position;
         private SimpleButton _button;
+        private bool _isVisited;
+        public bool IsVisited { get => _isVisited; set => _isVisited = value; }
 
         public Tile(TileID id, Texture2D graphic, MergeDirection[] mergeDirections, float angle, Vector2 position)
         {
@@ -54,6 +58,16 @@ namespace LifeIn2D.Entities
         {
             sprites.Draw(_graphic, null, _origin, _position, _angle, Vector2.One, Color.White);
             _button.Draw(sprites);
+        }
+
+        public bool Contains(MergeDirection mergeDirection)
+        {
+            for (int i = 0; i < _mergeDirections.Length; i++)
+            {
+                if (_mergeDirections[i] == mergeDirection)
+                    return true;
+            }
+            return false;
         }
     }
 }
