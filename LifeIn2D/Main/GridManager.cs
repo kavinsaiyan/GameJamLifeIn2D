@@ -3,6 +3,8 @@ using LifeIn2D.Input;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using System.Linq;
+
 namespace LifeIn2D.Main
 {
     public class GridManager
@@ -90,39 +92,42 @@ namespace LifeIn2D.Main
             {
                 TilePos current = queue.Dequeue();
                 current.tile.IsVisited = true;
+                Logger.Log("current is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
                 if (current.tile.Id == TileID.Brain)
                 {
                     Logger.Log("path is present to brain");
+                    break;
                 }
 
                 List<TilePos> neighbourTiles = new List<TilePos>();
-                //right
-                if (current.rowIndex + 1 < tileGrid.GetLength(0) && current.colIndex < tileGrid.GetLength(1))
-                    neighbourTiles.Add(new TilePos(current.rowIndex + 1, current.colIndex, tileGrid[current.rowIndex + 1, current.colIndex]));
-                //left
-                if (current.rowIndex - 1 > 0 && current.colIndex < tileGrid.GetLength(1))
-                    neighbourTiles.Add(new TilePos(current.rowIndex - 1, current.colIndex, tileGrid[current.rowIndex + 1, current.colIndex]));
-                //bottom
-                if (current.rowIndex < tileGrid.GetLength(0) && current.colIndex + 1 < tileGrid.GetLength(1))
-                    neighbourTiles.Add(new TilePos(current.rowIndex, current.colIndex + 1, tileGrid[current.rowIndex, current.colIndex + 1]));
-                //top
-                if (current.rowIndex < tileGrid.GetLength(0) && current.colIndex - 1 > 0)
-                    neighbourTiles.Add(new TilePos(current.rowIndex, current.colIndex - 1, tileGrid[current.rowIndex, current.colIndex - 1]));
-
-                for (int i = 0; i < current.tile.MergeDirections.Length; i++)
+                void CheckAndAddNeighbourTile(int rowIndex, int colIndex, MergeDirection mergeDirection)
                 {
-                    for (int j = 0; j < neighbourTiles.Count; j++)
-                    {
-                        if (neighbourTiles[j].tile.Id != TileID.None
-                            && neighbourTiles[j].tile.Contains(current.tile.MergeDirections[i])
-                            && neighbourTiles[j].tile.IsVisited == false)
-                        {
-                            queue.Enqueue(neighbourTiles[j]);
-                        }
-                    }
+                    if (rowIndex >= tileGrid.GetLength(0) || rowIndex < 0)
+                        return;
+                    if (colIndex >= tileGrid.GetLength(1) || colIndex < 0)
+                        return;
+                    Tile neighbourTile = tileGrid[rowIndex, colIndex];
+                    Logger.Log("row index and col index is present for " + neighbourTile.Id + " with r :" + rowIndex + ", c : " + colIndex);
+                    if (neighbourTile.Id == TileID.None)
+                        return;
+                    Logger.Log("Neighbour tile id is " + neighbourTile.Id + " with mergerdirections " + string.Join(",", neighbourTile.MergeDirections));
+                    if (current.tile.Contains(mergeDirection) == false)
+                        return;
+                    Logger.Log("current tile also contains direction " + mergeDirection);
+                    if (neighbourTile.ContainsEntryFor(mergeDirection) == false)
+                        return;
+                    Logger.Log("neighbour tile also contains entry direction " + mergeDirection);
+                    if (neighbourTile.IsVisited == true)
+                        return;
+                    TilePos tilePos = new TilePos(rowIndex, colIndex, neighbourTile);
+                    Logger.Log("enqueing tile " + tilePos.tile.Id);
+                    queue.Enqueue(tilePos);
                 }
+                CheckAndAddNeighbourTile(current.rowIndex + 1, current.colIndex, MergeDirection.Down);
+                CheckAndAddNeighbourTile(current.rowIndex - 1, current.colIndex, MergeDirection.Up);
+                CheckAndAddNeighbourTile(current.rowIndex, current.colIndex + 1, MergeDirection.Right);
+                CheckAndAddNeighbourTile(current.rowIndex, current.colIndex - 1, MergeDirection.Left);
             }
-
         }
     }
 

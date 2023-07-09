@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LifeIn2D.Entities
 {
-    public enum MergeDirection { Left, Up, Right, Down }
+    public enum MergeDirection { Left, Down, Right, Up, }
 
     public class Tile
     {
@@ -44,7 +44,7 @@ namespace LifeIn2D.Entities
         {
             // Logger.Log("Rotate Tile");
             for (int i = 0; i < _mergeDirections.Length; i++)
-                _mergeDirections[i] = (MergeDirection)((int)_mergeDirections[i] + 1);
+                _mergeDirections[i] = (MergeDirection)(((int)_mergeDirections[i] + 1) % 4);
             _angle += MathHelper.PiOver2;
             _id = TileRotator.GetNextRotation(_id);
         }
@@ -60,14 +60,37 @@ namespace LifeIn2D.Entities
             _button.Draw(sprites);
         }
 
+        public bool ContainsEntryFor(MergeDirection mergeDirection)
+        {
+            mergeDirection = GetOppositeDirectionFor(mergeDirection);
+            Logger.Log("opp direction " + mergeDirection);
+            return Contains(mergeDirection);
+        }
         public bool Contains(MergeDirection mergeDirection)
         {
+            Logger.Log("current tile " + Id + " with merge " + string.Join(",", _mergeDirections));
             for (int i = 0; i < _mergeDirections.Length; i++)
             {
                 if (_mergeDirections[i] == mergeDirection)
                     return true;
             }
             return false;
+        }
+        public static MergeDirection GetOppositeDirectionFor(MergeDirection mergeDirection)
+        {
+            switch (mergeDirection)
+            {
+                case MergeDirection.Up:
+                    return MergeDirection.Down;
+                case MergeDirection.Down:
+                    return MergeDirection.Up;
+                case MergeDirection.Left:
+                    return MergeDirection.Right;
+                case MergeDirection.Right:
+                    return MergeDirection.Left;
+            }
+            Logger.LogError("Opposite not defined for " + mergeDirection);
+            return MergeDirection.Up;
         }
     }
 }

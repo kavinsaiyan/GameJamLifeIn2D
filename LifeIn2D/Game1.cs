@@ -15,10 +15,6 @@ namespace LifeIn2D
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private Sprites _sprites;
-        private PhysicsWorld _world;
-        private Entity _player;
-        private List<Entity> _entities;
-        private List<TriggerEntity> _triggerEntities;
         private GridManager _gridManager;
 
         public Game1()
@@ -30,9 +26,6 @@ namespace LifeIn2D
 
         protected override void Initialize()
         {
-            _world = new PhysicsWorld();
-            _entities = new List<Entity>();
-            _triggerEntities = new List<TriggerEntity>();
             _gridManager = new GridManager();
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
             base.Initialize();
@@ -50,15 +43,14 @@ namespace LifeIn2D
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            _world.Step((float)gameTime.ElapsedGameTime.TotalSeconds, 4);
-
             Vector2 movement = Vector2.Zero;
             CustomKeyboard.Instance.Update();
             if (CustomKeyboard.Instance.IsKeyClicked(Keys.W) || CustomKeyboard.Instance.IsKeyClicked(Keys.Up)) { movement.Y++; _gridManager.tileGrid[0, 1].Rotate(); }
-            if (CustomKeyboard.Instance.IsKeyDown(Keys.S) || CustomKeyboard.Instance.IsKeyDown(Keys.Down)) { movement.Y--; _gridManager.FindPath(); }
+            if (CustomKeyboard.Instance.IsKeyDown(Keys.S) || CustomKeyboard.Instance.IsKeyDown(Keys.Down)) { movement.Y--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.A) || CustomKeyboard.Instance.IsKeyDown(Keys.Left)) { movement.X--; }
             if (CustomKeyboard.Instance.IsKeyDown(Keys.D) || CustomKeyboard.Instance.IsKeyDown(Keys.Right)) { movement.X++; }
-
+            if (CustomKeyboard.Instance.IsKeyClicked(Keys.K))
+            { _gridManager.FindPath(); }
             CustomMouse.Instance.Update();
             Vector2 ingameMousePos = new Vector2(CustomMouse.Instance.WindowPosition.X, GraphicsDevice.Viewport.Height - CustomMouse.Instance.WindowPosition.Y);
             _gridManager.Update(gameTime, ingameMousePos, CustomMouse.Instance.IsLeftButtonClicked());
