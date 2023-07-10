@@ -6,7 +6,6 @@ namespace LifeIn2D.Main
     {
         public static TileID GetNextRotation(TileID tileID)
         {
-            //TODO: define rotations
             switch (tileID)
             {
                 case TileID.Horizontal:

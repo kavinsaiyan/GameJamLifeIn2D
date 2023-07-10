@@ -92,7 +92,7 @@ namespace LifeIn2D.Main
             {
                 TilePos current = queue.Dequeue();
                 current.tile.IsVisited = true;
-                Logger.Log("current is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
+                // Logger.Log("current Tile is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
                 if (current.tile.Id == TileID.Brain)
                 {
                     Logger.Log("path is present to brain");
@@ -103,24 +103,42 @@ namespace LifeIn2D.Main
                 void CheckAndAddNeighbourTile(int rowIndex, int colIndex, MergeDirection mergeDirection)
                 {
                     if (rowIndex >= tileGrid.GetLength(0) || rowIndex < 0)
+                    {
+                        // Logger.Log("row index is out of grid length");
                         return;
+                    }
                     if (colIndex >= tileGrid.GetLength(1) || colIndex < 0)
+                    {
+                        // Logger.Log("column index is out of grid length");
                         return;
+                    }
                     Tile neighbourTile = tileGrid[rowIndex, colIndex];
-                    Logger.Log("row index and col index is present for " + neighbourTile.Id + " with r :" + rowIndex + ", c : " + colIndex);
+                    // Logger.Log("row index and col index is present for " + neighbourTile.Id + " with r :" + rowIndex + ", c : " + colIndex);
                     if (neighbourTile.Id == TileID.None)
+                    {
+                        // Logger.Log("Tile id is None!");
                         return;
-                    Logger.Log("Neighbour tile id is " + neighbourTile.Id + " with mergerdirections " + string.Join(",", neighbourTile.MergeDirections));
+                    }
+                    // Logger.Log("Neighbour tile id is " + neighbourTile.Id + " with mergerdirections " + string.Join(",", neighbourTile.MergeDirections));
                     if (current.tile.Contains(mergeDirection) == false)
+                    {
+                        // Logger.Log("Current tile does not contain direction " + mergeDirection);
                         return;
-                    Logger.Log("current tile also contains direction " + mergeDirection);
+                    }
+                    // Logger.Log("current tile also contains direction " + mergeDirection);
                     if (neighbourTile.ContainsEntryFor(mergeDirection) == false)
+                    {
+                        // Logger.Log("Neighour Tile {neighbourTile.ID} does not contain entry for direction {mergeDirection}");
                         return;
-                    Logger.Log("neighbour tile also contains entry direction " + mergeDirection);
+                    }
+                    // Logger.Log("neighbour tile also contains entry direction " + mergeDirection);
                     if (neighbourTile.IsVisited == true)
+                    {
+                        // Logger.Log("Neighbour tile is already visited!");
                         return;
+                    }
                     TilePos tilePos = new TilePos(rowIndex, colIndex, neighbourTile);
-                    Logger.Log("enqueing tile " + tilePos.tile.Id);
+                    // Logger.Log("enqueing tile " + tilePos.tile.Id);
                     queue.Enqueue(tilePos);
                 }
                 CheckAndAddNeighbourTile(current.rowIndex + 1, current.colIndex, MergeDirection.Down);
