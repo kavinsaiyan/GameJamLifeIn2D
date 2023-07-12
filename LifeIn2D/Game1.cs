@@ -28,6 +28,8 @@ namespace LifeIn2D
         {
             _gridManager = new GridManager();
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
+
+            CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
             base.Initialize();
         }
 
@@ -52,8 +54,7 @@ namespace LifeIn2D
             if (CustomKeyboard.Instance.IsKeyClicked(Keys.K))
             { _gridManager.FindPath(); }
             CustomMouse.Instance.Update();
-            Vector2 ingameMousePos = new Vector2(CustomMouse.Instance.WindowPosition.X, GraphicsDevice.Viewport.Height - CustomMouse.Instance.WindowPosition.Y);
-            _gridManager.Update(gameTime, ingameMousePos, CustomMouse.Instance.IsLeftButtonClicked());
+            _gridManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -64,6 +65,10 @@ namespace LifeIn2D
 
             _sprites.Begin(false);
             _gridManager.Draw(_sprites);
+            _sprites.DrawCircle(CustomMouse.Instance.WindowPosition, 4f, 12, Color.White);
+            Vector2 ingameMousePos = new Vector2(CustomMouse.Instance.WindowPosition.X, GraphicsDevice.Viewport.Height - CustomMouse.Instance.WindowPosition.Y);
+            _sprites.DrawCircle(ingameMousePos, 4f, 12, Color.White);
+
             _sprites.End();
 
             base.Draw(gameTime);

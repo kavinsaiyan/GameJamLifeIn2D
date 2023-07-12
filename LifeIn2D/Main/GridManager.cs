@@ -50,14 +50,14 @@ namespace LifeIn2D.Main
         }
 
 
-        public void Update(GameTime gameTime, Vector2 mousePos, bool isMouseClicked)
+        public void Update(GameTime gameTime)
         {
             for (int i = 0; i < tileGrid.GetLength(0); i++)
             {
                 for (int j = 0; j < tileGrid.GetLength(1); j++)
                 {
                     if (tileGrid[i, j].Id != TileID.None)
-                        tileGrid[i, j].Update(gameTime, mousePos, isMouseClicked);
+                        tileGrid[i, j].Update(gameTime);
                 }
             }
         }

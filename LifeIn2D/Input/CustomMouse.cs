@@ -12,15 +12,14 @@ namespace LifeIn2D.Input
         {
             get { return lazy.Value; }
         }
-
+        private float _height;
         private MouseState _prevMouseState;
         private MouseState _currentMouseState;
-
         public Vector2 WindowPosition
         {
             get
             {
-                return _currentMouseState.Position.ToVector2();
+                return new Vector2(0, _height) - _currentMouseState.Position.ToVector2();
             }
         }
 
@@ -30,6 +29,11 @@ namespace LifeIn2D.Input
             _currentMouseState = _prevMouseState;
         }
 
+        public void Initialize(float height)
+        {
+            _height = height;
+            Logger.Log("INit and height set is " + _height);
+        }
         public void Update()
         {
             _prevMouseState = _currentMouseState;

@@ -49,9 +49,9 @@ namespace LifeIn2D.Entities
             _id = TileRotator.GetNextRotation(_id);
         }
 
-        public void Update(GameTime gameTime, Vector2 mousePos, bool isMouseClicked)
+        public void Update(GameTime gameTime)
         {
-            _button.Update(mousePos, isMouseClicked);
+            _button.Update();
         }
 
         public void Draw(Sprites sprites)
