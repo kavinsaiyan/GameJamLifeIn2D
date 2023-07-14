@@ -33,7 +33,6 @@ namespace LifeIn2D.Input
         public void Initialize(float height)
         {
             _height = height;
-            Logger.Log("INit and height set is " + _height);
         }
         public void Update()
         {

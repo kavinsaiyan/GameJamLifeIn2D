@@ -22,6 +22,7 @@ namespace LifeIn2D.Entities
         private SimpleButton _button;
         private bool _isVisited;
         public bool IsVisited { get => _isVisited; set => _isVisited = value; }
+        public event System.Action OnRotate;
 
         public Tile(TileID id, Texture2D graphic, MergeDirection[] mergeDirections, float angle, Vector2 position)
         {
