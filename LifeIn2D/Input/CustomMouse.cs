@@ -19,7 +19,8 @@ namespace LifeIn2D.Input
         {
             get
             {
-                return new Vector2(0, _height) - _currentMouseState.Position.ToVector2();
+                Point pos = _currentMouseState.Position;
+                return new Vector2(pos.X, _height - pos.Y);
             }
         }
 

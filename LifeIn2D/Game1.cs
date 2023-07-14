@@ -65,10 +65,6 @@ namespace LifeIn2D
 
             _sprites.Begin(false);
             _gridManager.Draw(_sprites);
-            _sprites.DrawCircle(CustomMouse.Instance.WindowPosition, 4f, 12, Color.White);
-            Vector2 ingameMousePos = new Vector2(CustomMouse.Instance.WindowPosition.X, GraphicsDevice.Viewport.Height - CustomMouse.Instance.WindowPosition.Y);
-            _sprites.DrawCircle(ingameMousePos, 4f, 12, Color.White);
-
             _sprites.End();
 
             base.Draw(gameTime);
