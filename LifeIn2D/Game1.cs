@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System;
 using LifeIn2D.Main;
 using MonoGame.Extended;
+using LifeIn2D.Audio;
+using LifeIn2D.Entities;
 
 namespace LifeIn2D
 {
@@ -17,6 +19,9 @@ namespace LifeIn2D
         private Sprites _sprites;
         private GridManager _gridManager;
 
+        private InputManager _inputManager;
+        private AudioManager _audioManager;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -26,13 +31,30 @@ namespace LifeIn2D
 
         protected override void Initialize()
         {
+            _audioManager = new AudioManager(Content);
+            _inputManager = new InputManager();
+
             _gridManager = new GridManager();
+            _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
+
             base.Initialize();
         }
 
+        private void OnTileCreated(Tile tile)
+        {
+            if (tile.Id == TileID.None)
+                return;
+
+            SimpleButton button = new SimpleButton(tile.Width, tile.Height, tile.Position - tile.Origin);
+            button.OnClick += tile.Rotate;
+            _inputManager.AddButton(button);
+            Logger.Log("created tile : " + tile.Id);
+
+            button.OnClick += _audioManager.PlayClickSound;
+        }
 
         protected override void LoadContent()
         {
@@ -54,7 +76,7 @@ namespace LifeIn2D
             if (CustomKeyboard.Instance.IsKeyClicked(Keys.K))
             { _gridManager.FindPath(); }
             CustomMouse.Instance.Update();
-            _gridManager.Update(gameTime);
+            _inputManager.Update();
 
             base.Update(gameTime);
         }
@@ -65,6 +87,7 @@ namespace LifeIn2D
 
             _sprites.Begin(false);
             _gridManager.Draw(_sprites);
+            _inputManager.Draw(_sprites);
             _sprites.End();
 
             base.Draw(gameTime);

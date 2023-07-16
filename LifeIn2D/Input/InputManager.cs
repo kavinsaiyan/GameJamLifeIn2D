@@ -4,13 +4,32 @@ namespace LifeIn2D.Input
 {
     public class InputManager
     {
-        public List<SimpleButton> simpleButtons;
+        private List<SimpleButton> _simpleButtons;
 
-        public static InputManager instance;
         public InputManager()
         {
-            simpleButtons = new List<SimpleButton>();
-            instance = this;
+            _simpleButtons = new List<SimpleButton>();
+        }
+
+        public void AddButton(SimpleButton simpleButton)
+        {
+            _simpleButtons.Add(simpleButton);
+        }
+
+        public void Update()
+        {
+            for (int i = 0; i < _simpleButtons.Count; i++)
+            {
+                _simpleButtons[i].Update();
+            }
+        }
+
+        public void Draw(Sprites sprites)
+        {
+            for (int i = 0; i < _simpleButtons.Count; i++)
+            {
+                _simpleButtons[i].Draw(sprites);
+            }
         }
     }
 }

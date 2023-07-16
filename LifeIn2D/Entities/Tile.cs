@@ -15,14 +15,18 @@ namespace LifeIn2D.Entities
         public TileID Id { get => _id; }
 
         private Vector2 _origin;
+        public Vector2 Origin { get => _origin; }
         private MergeDirection[] _mergeDirections;
         public MergeDirection[] MergeDirections => _mergeDirections;
         private float _angle;
         private Vector2 _position;
-        private SimpleButton _button;
+        public Vector2 Position { get => _position; }
         private bool _isVisited;
         public bool IsVisited { get => _isVisited; set => _isVisited = value; }
-        public event System.Action OnRotate;
+
+        public int Width => _graphic.Width;
+        public int Height => _graphic.Height;
+
 
         public Tile(TileID id, Texture2D graphic, MergeDirection[] mergeDirections, float angle, Vector2 position)
         {
@@ -34,8 +38,6 @@ namespace LifeIn2D.Entities
             if (_id != TileID.None)
             {
                 _origin = new Vector2(_graphic.Width / 2, _graphic.Height / 2);
-                _button = new SimpleButton(graphic.Width, graphic.Height, position - _origin);
-                _button.OnClick += Rotate;
             }
             else
                 _origin = Vector2.Zero;
@@ -50,15 +52,9 @@ namespace LifeIn2D.Entities
             _id = TileRotator.GetNextRotation(_id);
         }
 
-        public void Update(GameTime gameTime)
-        {
-            _button.Update();
-        }
-
         public void Draw(Sprites sprites)
         {
             sprites.Draw(_graphic, null, _origin, _position, _angle, Vector2.One, Color.White);
-            _button.Draw(sprites);
         }
 
         public bool ContainsEntryFor(MergeDirection mergeDirection)

@@ -15,6 +15,8 @@ namespace LifeIn2D.Main
         float xPos;
         float yPos;
 
+        public event System.Action<Tile> OnTileCreated;
+
 
         public int[,] grid = new int[5, 5]
         {
@@ -42,7 +44,7 @@ namespace LifeIn2D.Main
                     // Logger.Log($"grid pos {i},{j} is {new Vector2(xPos, yPos)}");
                     tileGrid[i, j] = TileCreator.CreateTile(grid[i, j], new Vector2(xPos, yPos), contentManager);
                     xPos += 64;
-
+                    OnTileCreated?.Invoke(tileGrid[i, j]);
                 }
                 xPos = -cornorPos + width / 2;
                 yPos -= 64;
@@ -52,14 +54,7 @@ namespace LifeIn2D.Main
 
         public void Update(GameTime gameTime)
         {
-            for (int i = 0; i < tileGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < tileGrid.GetLength(1); j++)
-                {
-                    if (tileGrid[i, j].Id != TileID.None)
-                        tileGrid[i, j].Update(gameTime);
-                }
-            }
+
         }
 
         public void Draw(Sprites sprites)

@@ -6,12 +6,15 @@ namespace LifeIn2D.Audio
 {
     public class AudioManager
     {
-        public static AudioManager instance;
-        public SoundEffect clickSoundEffect;
+        private SoundEffect _clickSoundEffect;
         public AudioManager(ContentManager content)
         {
-            clickSoundEffect = content.Load<SoundEffect>("ClickTile");
-            instance = this;
+            // _clickSoundEffect = content.Load<SoundEffect>("ClickTile");
+        }
+
+        public void PlayClickSound()
+        {
+            // _clickSoundEffect.Play();
         }
     }
 }
