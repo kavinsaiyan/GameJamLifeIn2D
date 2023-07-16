@@ -66,15 +66,10 @@ namespace LifeIn2D
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            Vector2 movement = Vector2.Zero;
-            CustomKeyboard.Instance.Update();
-            if (CustomKeyboard.Instance.IsKeyClicked(Keys.W) || CustomKeyboard.Instance.IsKeyClicked(Keys.Up)) { movement.Y++; _gridManager.tileGrid[0, 1].Rotate(); }
-            if (CustomKeyboard.Instance.IsKeyDown(Keys.S) || CustomKeyboard.Instance.IsKeyDown(Keys.Down)) { movement.Y--; }
-            if (CustomKeyboard.Instance.IsKeyDown(Keys.A) || CustomKeyboard.Instance.IsKeyDown(Keys.Left)) { movement.X--; }
-            if (CustomKeyboard.Instance.IsKeyDown(Keys.D) || CustomKeyboard.Instance.IsKeyDown(Keys.Right)) { movement.X++; }
-            if (CustomKeyboard.Instance.IsKeyClicked(Keys.K))
-            { _gridManager.FindPath(); }
             CustomMouse.Instance.Update();
+            CustomKeyboard.Instance.Update();
+            if (CustomKeyboard.Instance.IsKeyClicked(Keys.F))
+                _gridManager.FindPath();
             _inputManager.Update();
 
             base.Update(gameTime);
@@ -86,7 +81,7 @@ namespace LifeIn2D
 
             _sprites.Begin(false);
             _gridManager.Draw(_sprites);
-            _inputManager.Draw(_sprites);
+            _inputManager.Draw(_sprites); // drawing debug button outline
             _sprites.End();
 
             base.Draw(gameTime);
