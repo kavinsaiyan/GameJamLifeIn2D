@@ -9,12 +9,12 @@ namespace LifeIn2D.Audio
         private SoundEffect _clickSoundEffect;
         public AudioManager(ContentManager content)
         {
-            // _clickSoundEffect = content.Load<SoundEffect>("ClickTile");
+            _clickSoundEffect = content.Load<SoundEffect>("Audio/ClickTile");
         }
 
         public void PlayClickSound()
         {
-            // _clickSoundEffect.Play();
+            _clickSoundEffect.Play();
         }
     }
 }

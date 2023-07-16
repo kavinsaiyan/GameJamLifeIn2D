@@ -51,7 +51,6 @@ namespace LifeIn2D
             SimpleButton button = new SimpleButton(tile.Width, tile.Height, tile.Position - tile.Origin);
             button.OnClick += tile.Rotate;
             _inputManager.AddButton(button);
-            Logger.Log("created tile : " + tile.Id);
 
             button.OnClick += _audioManager.PlayClickSound;
         }
