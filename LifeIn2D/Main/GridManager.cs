@@ -16,6 +16,7 @@ namespace LifeIn2D.Main
         float yPos;
 
         public event System.Action<Tile> OnTileCreated;
+        public event System.Action OnPathFound;
 
 
         public int[,] grid = new int[5, 5]
@@ -91,6 +92,7 @@ namespace LifeIn2D.Main
                 if (current.tile.Id == TileID.Brain)
                 {
                     Logger.Log("path is present to brain");
+                    OnPathFound?.Invoke();
                     break;
                 }
 
@@ -142,7 +144,13 @@ namespace LifeIn2D.Main
                 CheckAndAddNeighbourTile(current.rowIndex, current.colIndex - 1, MergeDirection.Left);
             }
         }
+        public void Reset()
+        {
+            tileGrid = null;
+            grid = null;
+        }
     }
+
 
     public class TilePos
     {

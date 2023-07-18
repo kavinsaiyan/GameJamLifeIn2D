@@ -16,6 +16,11 @@ namespace LifeIn2D.Input
             _simpleButtons.Add(simpleButton);
         }
 
+        public void RemoveAllButtons()
+        {
+            _simpleButtons.Clear();
+        }
+
         public void Update()
         {
             for (int i = 0; i < _simpleButtons.Count; i++)

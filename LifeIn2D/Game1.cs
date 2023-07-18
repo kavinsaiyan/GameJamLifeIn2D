@@ -36,11 +36,27 @@ namespace LifeIn2D
 
             _gridManager = new GridManager();
             _gridManager.OnTileCreated += OnTileCreated;
+            _gridManager.OnPathFound += OnPathFound;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
             base.Initialize();
+        }
+
+        private void OnPathFound()
+        {
+            _inputManager.RemoveAllButtons();
+            _gridManager.Reset();
+            _gridManager.grid = new int[,]
+            {
+                {11, 0 , 5 , 14, 14},
+                {14, 14, 2 , 14, 14},
+                {14, 14, 3 , 7, 14},
+                {14, 14, 14, 1 , 14},
+                {14, 14, 14, 3 , 12},
+            };
+            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
         }
 
         private void OnTileCreated(Tile tile)
@@ -53,6 +69,7 @@ namespace LifeIn2D
             _inputManager.AddButton(button);
 
             button.OnClick += _audioManager.PlayClickSound;
+            button.OnClick += _gridManager.FindPath;
         }
 
         protected override void LoadContent()
