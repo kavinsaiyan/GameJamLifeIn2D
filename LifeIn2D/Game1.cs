@@ -21,6 +21,7 @@ namespace LifeIn2D
 
         private InputManager _inputManager;
         private AudioManager _audioManager;
+        private LevelLoader _levelLoader;
 
         public Game1()
         {
@@ -34,28 +35,31 @@ namespace LifeIn2D
             _audioManager = new AudioManager(Content);
             _inputManager = new InputManager();
 
+            _levelLoader = new LevelLoader();
+            _levelLoader.Load();
+
             _gridManager = new GridManager();
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
+            _gridManager.grid = _levelLoader.grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
+
 
             base.Initialize();
         }
 
         private void OnPathFound()
         {
+            _levelLoader.currentLevel++;
+            _levelLoader.Load();
+
             _inputManager.RemoveAllButtons();
+
             _gridManager.Reset();
-            _gridManager.grid = new int[,]
-            {
-                {11, 0 , 5 , 14, 14},
-                {14, 14, 2 , 14, 14},
-                {14, 14, 3 , 7, 14},
-                {14, 14, 14, 1 , 14},
-                {14, 14, 14, 3 , 12},
-            };
+            _gridManager.grid = _levelLoader.grid;
+
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
         }
 
