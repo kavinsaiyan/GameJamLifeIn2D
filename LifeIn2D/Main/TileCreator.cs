@@ -104,7 +104,7 @@ namespace LifeIn2D.Main
                 case TileID.None:
                     return new Tile(TileID.None, null, null, 0, pos);
             }
-            Logger.LogError("no graphic found for creating the tile");
+            Logger.LogError("[TileCreator.cs/CreateTile]: no graphic found for creating the tile id " + id);
             return new Tile(TileID.None, null, null, 0, pos);
         }
     }
