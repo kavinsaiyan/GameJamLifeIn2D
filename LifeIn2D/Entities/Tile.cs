@@ -65,6 +65,11 @@ namespace LifeIn2D.Entities
         }
         public bool Contains(MergeDirection mergeDirection)
         {
+            if (_mergeDirections == null)
+            {
+                Logger.LogError("[Tile.cs/Contains]: Merge directions array is null for " + Id);
+                return false;
+            }
             // Logger.Log("current tile " + Id + " with merge " + string.Join(",", _mergeDirections));
             for (int i = 0; i < _mergeDirections.Length; i++)
             {

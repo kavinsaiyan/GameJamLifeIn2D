@@ -2,6 +2,7 @@ namespace LifeIn2D.Entities
 {
     public enum TileID
     {
+        None = -1,
         Horizontal = 0,
         Vertical = 1,
         Plus = 2,
@@ -16,6 +17,5 @@ namespace LifeIn2D.Entities
         Heart = 11,
         Brain = 12,
         Kidney = 13,
-        None = 14,
     }
 }

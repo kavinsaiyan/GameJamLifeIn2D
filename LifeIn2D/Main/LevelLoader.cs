@@ -69,6 +69,7 @@ namespace LifeIn2D
                         levelContentReadCount++;
                         if (levelContentReadCount == rows)
                         {
+                            Logger.Log("level loader loaded level " + currentLevel);
                             state = LevelLoadingState.Done;
                             break;
                         }

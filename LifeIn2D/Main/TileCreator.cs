@@ -40,6 +40,13 @@ namespace LifeIn2D.Main
                         MergeDirection.Down,
                         MergeDirection.Right,
                     }, 0, pos);
+                case TileID.Threeway_rot90:
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
+                    {
+                            MergeDirection.Up,
+                            MergeDirection.Left,
+                            MergeDirection.Right,
+                    }, MathHelper.ToRadians(90), pos);
                 case TileID.Threeway_rot180:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
                     {
@@ -47,17 +54,10 @@ namespace LifeIn2D.Main
                             MergeDirection.Left,
                             MergeDirection.Up,
                     }, MathHelper.ToRadians(180), pos);
-                case TileID.Threeway_rot90:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
-                    {
-                            MergeDirection.Down,
-                            MergeDirection.Left,
-                            MergeDirection.Right,
-                    }, MathHelper.ToRadians(90), pos);
                 case TileID.Threeway_rot270:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
                     {
-                            MergeDirection.Up,
+                            MergeDirection.Down,
                             MergeDirection.Left,
                             MergeDirection.Right,
                     }, MathHelper.ToRadians(270), pos);
@@ -70,8 +70,8 @@ namespace LifeIn2D.Main
                 case TileID.L_rot90:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_L_Shape"),
                     new MergeDirection[]{
-                        MergeDirection.Down,
-                        MergeDirection.Right,
+                        MergeDirection.Left,
+                        MergeDirection.Up,
                     }, MathHelper.ToRadians(90), pos);
                 case TileID.L_rot180:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_L_Shape"),
@@ -82,8 +82,8 @@ namespace LifeIn2D.Main
                 case TileID.L_rot270:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_L_Shape"),
                     new MergeDirection[]{
-                        MergeDirection.Left,
-                        MergeDirection.Up,
+                        MergeDirection.Right,
+                        MergeDirection.Down,
                     }, MathHelper.ToRadians(270), pos);
                 case TileID.Heart:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("SimpleHeart"),
