@@ -6,7 +6,7 @@ namespace LifeIn2D
     public enum LevelLoadingState { None, Header, CurrentLevel, Row, Col, LevelContent, Done, }
     public class LevelLoader
     {
-        public const string FILE_PATH = "Text Files/Levels.txt";
+        public const string FILE_PATH = "Text files/Levels.txt";
         public int[,] grid;
         public int currentLevel;
         int rows, columns;

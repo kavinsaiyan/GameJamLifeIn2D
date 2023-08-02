@@ -34,28 +34,28 @@ namespace LifeIn2D.Main
                         MergeDirection.Right,
                     }, 0, pos);
                 case TileID.Threeway_normal:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_ThreeWay"), new MergeDirection[]
                     {
                         MergeDirection.Up,
                         MergeDirection.Down,
                         MergeDirection.Right,
                     }, 0, pos);
                 case TileID.Threeway_rot90:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_ThreeWay"), new MergeDirection[]
                     {
                             MergeDirection.Up,
                             MergeDirection.Left,
                             MergeDirection.Right,
                     }, MathHelper.ToRadians(90), pos);
                 case TileID.Threeway_rot180:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_ThreeWay"), new MergeDirection[]
                     {
                             MergeDirection.Down,
                             MergeDirection.Left,
                             MergeDirection.Up,
                     }, MathHelper.ToRadians(180), pos);
                 case TileID.Threeway_rot270:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_Threeway"), new MergeDirection[]
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("Tile_ThreeWay"), new MergeDirection[]
                     {
                             MergeDirection.Down,
                             MergeDirection.Left,
