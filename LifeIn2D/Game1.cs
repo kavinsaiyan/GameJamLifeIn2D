@@ -42,7 +42,8 @@ namespace LifeIn2D
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
             _gridManager.grid = _levelLoader.grid;
-            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
+            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content, 
+                                new List<TileID>(){ TileID.Brain});
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
@@ -60,7 +61,9 @@ namespace LifeIn2D
             _gridManager.Reset();
             _gridManager.grid = _levelLoader.grid;
 
-            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content);
+            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
+                                    ,new List<TileID>(){ TileID.Brain,TileID.Brain});
+
         }
 
         private void OnTileCreated(Tile tile)

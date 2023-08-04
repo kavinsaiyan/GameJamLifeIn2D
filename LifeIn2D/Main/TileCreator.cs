@@ -1,5 +1,3 @@
-
-
 using LifeIn2D.Entities;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

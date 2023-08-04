@@ -14,6 +14,7 @@ namespace LifeIn2D.Main
         float cornorPos;
         float xPos;
         float yPos;
+        List<TileID> _destinations = new List<TileID>();
 
         public event System.Action<Tile> OnTileCreated;
         public event System.Action OnPathFound;
@@ -30,13 +31,14 @@ namespace LifeIn2D.Main
 
         public Tile[,] tileGrid;
 
-        public void Initialize(int width, int height, ContentManager contentManager)
+        public void Initialize(int width, int height, ContentManager contentManager, IEnumerable<TileID> destinations)
         {
             rowCount = grid.GetLength(0);
             rowWidth = rowCount * 64;
             cornorPos = rowWidth / 2;
             xPos = -cornorPos + width / 2;
             yPos = cornorPos + height / 2;
+            _destinations.Clear();
             tileGrid = new Tile[grid.GetLength(0), grid.GetLength(1)];
             for (int i = 0; i < rowCount; i++)
             {
@@ -89,16 +91,21 @@ namespace LifeIn2D.Main
                 }
             }
             // Logger.LogWarning("queue content " + queue.Count);
+            List<TileID> tempDestinations = new List<TileID>(_destinations);
             while (queue.Count > 0)
             {
                 TilePos current = queue.Dequeue();
                 current.tile.IsVisited = true;
                 // Logger.Log("current Tile is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
-                if (current.tile.Id == TileID.Brain)
+                if (tempDestinations.Contains(current.tile.Id ))
                 {
-                    // Logger.Log("    path is present to brain");
-                    OnPathFound?.Invoke();
-                    break;
+                    tempDestinations.Remove(current.tile.Id);
+                    if(tempDestinations.Count == 0)
+                    {
+                        // Logger.Log("    path is present to brain");
+                        OnPathFound?.Invoke();
+                        break;
+                    }
                 }
 
                 // Logger.Log(" current tile is " + current.tile.Id + " at pos " + current.rowIndex + " , " + current.colIndex);
