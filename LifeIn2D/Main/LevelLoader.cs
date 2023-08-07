@@ -1,15 +1,17 @@
 using System.IO;
+using LifeIn2D.Entities;
 using Microsoft.Xna.Framework;
 
 namespace LifeIn2D
 {
-    public enum LevelLoadingState { None, Header, CurrentLevel, Row, Col, LevelContent, Done, }
+    public enum LevelLoadingState { None, Header, CurrentLevel, Destinations, Row, Col, LevelContent, Done, }
     public class LevelLoader
     {
         public const string FILE_PATH = "Text files/Levels.txt";
         public int[,] grid;
         public int currentLevel;
         int rows, columns;
+        public TileID[] destinations;
         public LevelLoadingState state = LevelLoadingState.None;
         public LevelLoader()
         {
@@ -27,7 +29,7 @@ namespace LifeIn2D
                 // Read each line until the end of the file is reached
                 while ((line = reader.ReadLine()) != null)
                 {
-                    Logger.Log("level laoder state " + state);
+                    // Logger.Log("level laoder state " + state);
 
                     // Process the line here (e.g., print it)
                     if (line.Equals("#####"))
@@ -39,6 +41,18 @@ namespace LifeIn2D
                         && int.TryParse(line, out int currentLevelNumber)
                         && currentLevel == currentLevelNumber)
                     {
+                        state = LevelLoadingState.Destinations;
+                        continue;
+                    }
+                    if(state == LevelLoadingState.Destinations)
+                    {
+                        string[] split = line.Split(",");
+                        destinations = new TileID[split.Length];
+                        for (int i = 0; i < destinations.Length; i++)
+                        {
+                            if(int.TryParse(split[i],out int destination))
+                                destinations[i] = (TileID)destination; 
+                        }
                         state = LevelLoadingState.Row;
                         continue;
                     }
@@ -69,7 +83,7 @@ namespace LifeIn2D
                         levelContentReadCount++;
                         if (levelContentReadCount == rows)
                         {
-                            Logger.Log("level loader loaded level " + currentLevel);
+                            // Logger.Log("level loader loaded level " + currentLevel);
                             state = LevelLoadingState.Done;
                             break;
                         }

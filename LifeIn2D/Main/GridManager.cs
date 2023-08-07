@@ -39,6 +39,7 @@ namespace LifeIn2D.Main
             xPos = -cornorPos + width / 2;
             yPos = cornorPos + height / 2;
             _destinations.Clear();
+            _destinations.AddRange(destinations);
             tileGrid = new Tile[grid.GetLength(0), grid.GetLength(1)];
             for (int i = 0; i < rowCount; i++)
             {
@@ -74,7 +75,7 @@ namespace LifeIn2D.Main
 
         public void FindPath()
         {
-            // System.Console.Clear();
+            System.Console.Clear();
             //make a queue 
             Queue<TilePos> queue = new Queue<TilePos>();
             for (int i = 0; i < grid.GetLength(0); i++)
@@ -90,7 +91,7 @@ namespace LifeIn2D.Main
                         queue.Enqueue(new TilePos(i, j, tileGrid[i, j]));
                 }
             }
-            // Logger.LogWarning("queue content " + queue.Count);
+            // Logger.LogWarning("queue count" + queue.Count);
             List<TileID> tempDestinations = new List<TileID>(_destinations);
             while (queue.Count > 0)
             {
@@ -124,6 +125,11 @@ namespace LifeIn2D.Main
                     }
                     Tile neighbourTile = tileGrid[rowIndex, colIndex];
                     // Logger.Log(" row index and col index is present for " + neighbourTile.Id + " with r :" + rowIndex + ", c : " + colIndex);
+                    if (neighbourTile.IsVisited == true)
+                    {
+                        // Logger.Log("  Neighbour tile is already visited!");
+                        return;
+                    }
                     if (neighbourTile.Id == TileID.None)
                     {
                         // Logger.Log("  Tile id is None!");
@@ -142,11 +148,6 @@ namespace LifeIn2D.Main
                         return;
                     }
                     // Logger.Log(" neighbour tile also contains entry direction " + mergeDirection);
-                    if (neighbourTile.IsVisited == true)
-                    {
-                        // Logger.Log("  Neighbour tile is already visited!");
-                        return;
-                    }
                     TilePos tilePos = new TilePos(rowIndex, colIndex, neighbourTile);
                     // Logger.Log("    enqueing tile " + tilePos.tile.Id);
                     queue.Enqueue(tilePos);
