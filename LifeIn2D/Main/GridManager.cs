@@ -63,6 +63,8 @@ namespace LifeIn2D.Main
 
         public void Draw(Sprites sprites)
         {
+            if(grid == null)
+                return;
             for (var i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
