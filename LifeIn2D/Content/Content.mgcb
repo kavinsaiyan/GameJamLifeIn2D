@@ -90,3 +90,10 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Tile_Vertical.png
+
+#begin fonts/jupiteroidregular-rpj6v.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/JupiteroidRegular-Rpj6V.spritefont

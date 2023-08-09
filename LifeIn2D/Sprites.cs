@@ -80,9 +80,10 @@ namespace LifeIn2D
         {
             _spriteBatch.DrawRectangle(position.X, position.Y, width, height, color, 1, 0);
         }
-        public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color)
+        public void DrawString(SpriteFont spriteFont, string text, Vector2 position, Color color, float scale)
         {
-            _spriteBatch.DrawString(spriteFont, text, position, color);
+            _spriteBatch.DrawString(spriteFont, text, position, color,0, Vector2.Zero, scale, 
+                                                        SpriteEffects.FlipVertically, 0);
         }
     }
 }

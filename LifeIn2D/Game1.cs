@@ -9,6 +9,7 @@ using LifeIn2D.Main;
 using MonoGame.Extended;
 using LifeIn2D.Audio;
 using LifeIn2D.Entities;
+using System.Net.Http.Headers;
 
 namespace LifeIn2D
 {
@@ -23,6 +24,10 @@ namespace LifeIn2D
         private AudioManager _audioManager;
         private LevelLoader _levelLoader;
 
+        private Timer _timer;
+        private TextDisplayAction _displayAction;
+        private SpriteFont _jupiteroidFont;
+
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -32,7 +37,6 @@ namespace LifeIn2D
 
         protected override void Initialize()
         {
-            _audioManager = new AudioManager(Content);
             _inputManager = new InputManager();
 
             _levelLoader = new LevelLoader();
@@ -42,13 +46,24 @@ namespace LifeIn2D
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
             _gridManager.grid = _levelLoader.grid;
-            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content, 
-                                new List<TileID>(){ TileID.Brain});
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
+            _timer = new Timer();
 
             base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            _sprites = new Sprites(this);
+            _audioManager = new AudioManager(Content);
+            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content, 
+                                new List<TileID>(){ TileID.Brain});
+            _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
+            _displayAction = new TextDisplayAction(2,"Level 1", _jupiteroidFont, Vector2.One * 100, Color.Black);
+            _timer.AddAction(_displayAction);
         }
 
         private void OnPathFound()
@@ -63,7 +78,6 @@ namespace LifeIn2D
 
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
                                     ,_levelLoader.destinations);
-
         }
 
         private void OnTileCreated(Tile tile)
@@ -79,12 +93,6 @@ namespace LifeIn2D
             button.OnClick += _gridManager.FindPath;
         }
 
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _sprites = new Sprites(this);
-        }
-
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -95,6 +103,7 @@ namespace LifeIn2D
             if (CustomKeyboard.Instance.IsKeyClicked(Keys.F))
                 _gridManager.FindPath();
             _inputManager.Update();
+            _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
             base.Update(gameTime);
         }
@@ -104,8 +113,9 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
-            _gridManager.Draw(_sprites);
-            _inputManager.Draw(_sprites); // drawing debug button outline
+            // _gridManager.Draw(_sprites);
+            // _inputManager.Draw(_sprites); // drawing debug button outline
+            _displayAction.Draw(_sprites);
             _sprites.End();
 
             base.Draw(gameTime);

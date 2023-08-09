@@ -51,7 +51,7 @@ public class TextDisplayAction : ITimedAction
     {
         if (_canDisplay)
         {
-            sprites.DrawString(_spriteFont, _text,_position,_color);
+            sprites.DrawString(_spriteFont, _text,_position,_color,10);
         }
     }
 }
