@@ -25,7 +25,7 @@ public class Timer
             if (timedAction.Duration == timedAction.CurrentTime)
                 timedAction.Start();
             timedAction.CurrentTime = timedAction.CurrentTime - deltaTime;
-            if (timedAction.Duration <= 0)
+            if (timedAction.CurrentTime <= 0)
             {
                 timedAction.Finish();
                 _timedActions.Remove(timedAction);

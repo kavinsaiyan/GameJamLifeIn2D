@@ -10,6 +10,7 @@ using MonoGame.Extended;
 using LifeIn2D.Audio;
 using LifeIn2D.Entities;
 using System.Net.Http.Headers;
+using System.Runtime.CompilerServices;
 
 namespace LifeIn2D
 {
@@ -27,10 +28,12 @@ namespace LifeIn2D
         private Timer _timer;
         private TextDisplayAction _displayAction;
         private SpriteFont _jupiteroidFont;
-
+        private bool _displayGame = false;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.PreferredBackBufferWidth = 800;
+            _graphics.PreferredBackBufferHeight = 600;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -45,12 +48,10 @@ namespace LifeIn2D
             _gridManager = new GridManager();
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
-            _gridManager.grid = _levelLoader.grid;
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
             _timer = new Timer();
-
             base.Initialize();
         }
 
@@ -59,25 +60,39 @@ namespace LifeIn2D
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             _sprites = new Sprites(this);
             _audioManager = new AudioManager(Content);
-            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content, 
-                                new List<TileID>(){ TileID.Brain});
             _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
-            _displayAction = new TextDisplayAction(2,"Level 1", _jupiteroidFont, Vector2.One * 100, Color.Black);
+            InitializeLevelText();
+        }
+
+        private void InitializeLevelText()
+        {
+            _displayAction = new TextDisplayAction(2, "Level " + _levelLoader.currentLevel, _jupiteroidFont, 
+                            new Vector2(GraphicsDevice.Viewport.Width/2 - 100,GraphicsDevice.Viewport.Height/2 + 50),
+                            Color.Black);
+            _displayAction.OnComplete += OnTextDisplayComplete;
             _timer.AddAction(_displayAction);
         }
 
         private void OnPathFound()
         {
             _levelLoader.currentLevel++;
-            _levelLoader.Load();
 
             _inputManager.RemoveAllButtons();
-
             _gridManager.Reset();
+
+            InitializeLevelText();
+
+            _displayGame = false;
+        }
+
+        private void OnTextDisplayComplete()
+        {
+            _displayGame = true;
+            _levelLoader.Load();
             _gridManager.grid = _levelLoader.grid;
 
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    ,_levelLoader.destinations);
+                                    , _levelLoader.destinations);
         }
 
         private void OnTileCreated(Tile tile)
@@ -113,8 +128,11 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
-            // _gridManager.Draw(_sprites);
-            // _inputManager.Draw(_sprites); // drawing debug button outline
+            if (_displayGame)
+            {
+                _gridManager.Draw(_sprites);
+                // _inputManager.Draw(_sprites); // drawing debug button outline
+            }
             _displayAction.Draw(_sprites);
             _sprites.End();
 

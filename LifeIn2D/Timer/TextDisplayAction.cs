@@ -23,7 +23,7 @@ public class TextDisplayAction : ITimedAction
     public TextDisplayAction(float duration, string text, SpriteFont spriteFont, Vector2 position, Color color)
     {
         _duration = duration;
-        _currentTime = 0;
+        _currentTime = duration;
         _spriteFont = spriteFont;
         _canDisplay = false;
         _color = color;
@@ -51,7 +51,7 @@ public class TextDisplayAction : ITimedAction
     {
         if (_canDisplay)
         {
-            sprites.DrawString(_spriteFont, _text,_position,_color,10);
+            sprites.DrawString(_spriteFont, _text,_position,_color,4);
         }
     }
 }
