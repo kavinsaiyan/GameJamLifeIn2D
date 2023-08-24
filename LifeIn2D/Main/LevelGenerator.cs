@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace LifeIn2D.Main
 {
-    public class GridManager
+    public class LevelGenerator
     {
         float rowCount;
         float rowWidth;
@@ -22,11 +22,11 @@ namespace LifeIn2D.Main
 
         public int[,] grid = new int[5, 5]
         {
-            {11, 0 , 5 , 14, 14},
-            {14, 14, 2 , 14, 14},
-            {14, 14, 3 , 5 , 14},
-            {14, 14, 14, 1 , 14},
-            {14, 14, 14, 3 , 12},
+            {12,4,-1,3,14},
+            {-1,1,-1,1,-1},
+            {-1,7,11,8,-1},
+            {-1,0,-1,0,-1},
+            {15,5,-1,2,13},
         };
 
         public Tile[,] tileGrid;
@@ -63,16 +63,8 @@ namespace LifeIn2D.Main
 
         public void Draw(Sprites sprites)
         {
-            if(grid == null)
+            if (grid == null)
                 return;
-            for (var i = 0; i < grid.GetLength(0); i++)
-            {
-                for (int j = 0; j < grid.GetLength(1); j++)
-                {
-                    if (tileGrid[i, j].Id != TileID.None)
-                        tileGrid[i, j].Draw(sprites);
-                }
-            }
         }
 
         public void FindPath()
@@ -88,32 +80,32 @@ namespace LifeIn2D.Main
                         tileGrid[i, j].IsVisited = true;
                     else
                         tileGrid[i, j].IsVisited = false;
-                    if (tileGrid[i, j].Id == TileID.Heart)
-                        //add the heart to the queue
+
+                    if (tileGrid[i, j].Id == TileID.Brain)
                         queue.Enqueue(new TilePos(i, j, tileGrid[i, j]));
                 }
             }
             // Logger.LogWarning("queue count" + queue.Count);
-            List<TileID> tempDestinations = new List<TileID>(_destinations);
             while (queue.Count > 0)
             {
                 TilePos current = queue.Dequeue();
                 current.tile.IsVisited = true;
                 // Logger.Log("current Tile is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
-                if (tempDestinations.Contains(current.tile.Id ))
+                if (current.tile.Id == TileID.Heart)
                 {
-                    tempDestinations.Remove(current.tile.Id);
-                    if(tempDestinations.Count == 0)
+                    // Logger.Log("path is present to Heart and is as follows");
+                    TilePos temp = current;
+                    while(temp != null )
                     {
-                        // Logger.Log("    path is present to brain");
-                        OnPathFound?.Invoke();
-                        break;
+                        // Logger.Log($"\tTileid:{temp.tile.Id} rowIndex:{temp.rowIndex} colIndex:{temp.colIndex}");
+                        temp = temp.parent;
                     }
+                    OnPathFound?.Invoke();
+                    break;
                 }
 
                 // Logger.Log(" current tile is " + current.tile.Id + " at pos " + current.rowIndex + " , " + current.colIndex);
-                List<TilePos> neighbourTiles = new List<TilePos>();
-                void CheckAndAddNeighbourTile(int rowIndex, int colIndex, MergeDirection mergeDirection)
+                void CheckAndAddNeighbourTile(int rowIndex, int colIndex )
                 {
                     if (rowIndex >= tileGrid.GetLength(0) || rowIndex < 0)
                     {
@@ -137,49 +129,23 @@ namespace LifeIn2D.Main
                         // Logger.Log("  Tile id is None!");
                         return;
                     }
-                    // Logger.Log(" Neighbour tile id is " + neighbourTile.Id + " with mergerdirections " + string.Join(",", neighbourTile.MergeDirections));
-                    if (current.tile.Contains(mergeDirection) == false)
+                    TilePos tilePos = new TilePos(rowIndex, colIndex, neighbourTile)
                     {
-                        // Logger.Log("  Current tile does not contain direction " + mergeDirection);
-                        return;
-                    }
-                    // Logger.Log(" current tile also contains direction " + mergeDirection);
-                    if (neighbourTile.ContainsEntryFor(mergeDirection) == false)
-                    {
-                        // Logger.Log("  Neighour Tile {neighbourTile.ID} does not contain entry for direction {mergeDirection}");
-                        return;
-                    }
-                    // Logger.Log(" neighbour tile also contains entry direction " + mergeDirection);
-                    TilePos tilePos = new TilePos(rowIndex, colIndex, neighbourTile);
+                        parent = current
+                    };
                     // Logger.Log("    enqueing tile " + tilePos.tile.Id);
                     queue.Enqueue(tilePos);
                 }
-                CheckAndAddNeighbourTile(current.rowIndex + 1, current.colIndex, MergeDirection.Down);
-                CheckAndAddNeighbourTile(current.rowIndex - 1, current.colIndex, MergeDirection.Up);
-                CheckAndAddNeighbourTile(current.rowIndex, current.colIndex + 1, MergeDirection.Right);
-                CheckAndAddNeighbourTile(current.rowIndex, current.colIndex - 1, MergeDirection.Left);
+                CheckAndAddNeighbourTile(current.rowIndex + 1, current.colIndex);
+                CheckAndAddNeighbourTile(current.rowIndex - 1, current.colIndex);
+                CheckAndAddNeighbourTile(current.rowIndex, current.colIndex + 1);
+                CheckAndAddNeighbourTile(current.rowIndex, current.colIndex - 1);
             }
         }
         public void Reset()
         {
             tileGrid = null;
             grid = null;
-        }
-    }
-
-
-    public class TilePos
-    {
-        public int rowIndex;
-        public int colIndex;
-        public Tile tile;
-        public TilePos parent = null;
-
-        public TilePos(int rowIndex, int colIndex, Tile tile)
-        {
-            this.rowIndex = rowIndex;
-            this.colIndex = colIndex;
-            this.tile = tile;
         }
     }
 }

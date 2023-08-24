@@ -17,5 +17,7 @@ namespace LifeIn2D.Entities
         Heart = 11,
         Brain = 12,
         Kidney = 13,
+        Lungs = 14,
+        Intestine = 15,
     }
 }
