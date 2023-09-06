@@ -30,6 +30,14 @@ namespace LifeIn2D.Main
                     return TileID.Threeway_rot270;
                 case TileID.Threeway_rot270:
                     return TileID.Threeway_normal;
+                case TileID.Dest_Down:
+                    return TileID.Dest_Right;
+                case TileID.Dest_Right:
+                    return TileID.Dest_Up;
+                case TileID.Dest_Up:
+                    return TileID.Dest_Left;
+                case TileID.Dest_Left:
+                    return TileID.Dest_Down; 
             }
             Logger.LogError("Tile rotation not defined for " + tileID);
             return TileID.None;

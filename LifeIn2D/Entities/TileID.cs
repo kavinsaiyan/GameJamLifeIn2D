@@ -19,5 +19,9 @@ namespace LifeIn2D.Entities
         Kidney = 13,
         Lungs = 14,
         Intestine = 15,
+        Dest_Down =16,
+        Dest_Up = 17,
+        Dest_Right = 18,
+        Dest_Left = 19,
     }
 }
