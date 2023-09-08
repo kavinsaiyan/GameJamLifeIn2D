@@ -2,15 +2,12 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using LifeIn2D.Input;
-using SimplePhysics;
 using System.Collections.Generic;
 using System;
 using LifeIn2D.Main;
 using MonoGame.Extended;
 using LifeIn2D.Audio;
 using LifeIn2D.Entities;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
 
 namespace LifeIn2D
 {
@@ -92,10 +89,11 @@ namespace LifeIn2D
         {
             _displayGame = true;
             _levelLoader.Load();
+            
             _gridManager.grid = _levelLoader.grid;
-
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
                                     , _levelLoader.destinations);
+            _levelGenerator.grid = _levelLoader.grid; 
             _levelGenerator.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
                                     , _levelLoader.destinations);
         }

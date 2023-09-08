@@ -81,31 +81,37 @@ namespace LifeIn2D.Main
                     else
                         tileGrid[i, j].IsVisited = false;
 
-                    if (tileGrid[i, j].Id == TileID.Brain)
+                    if (tileGrid[i, j].Id == TileID.Heart)
                         queue.Enqueue(new TilePos(i, j, tileGrid[i, j]));
                 }
             }
             // Logger.LogWarning("queue count" + queue.Count);
+            List<TileID> tempDestinations = new List<TileID>(_destinations);
             while (queue.Count > 0)
             {
                 TilePos current = queue.Dequeue();
                 current.tile.IsVisited = true;
-                // Logger.Log("current Tile is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
-                if (current.tile.Id == TileID.Heart)
+                if (tempDestinations.Contains(current.tile.Id))
                 {
-                    // Logger.Log("path is present to Heart and is as follows");
-                    TilePos temp = current;
-                    while(temp != null )
+                    tempDestinations.Remove(current.tile.Id);
+                    if (tempDestinations.Count == 0)
                     {
-                        // Logger.Log($"\tTileid:{temp.tile.Id} rowIndex:{temp.rowIndex} colIndex:{temp.colIndex}");
-                        temp = temp.parent;
+                        // Logger.Log("path is present to Heart and is as follows");
+                        OnPathFound?.Invoke();
+                        break;
                     }
-                    OnPathFound?.Invoke();
-                    break;
+                    // TilePos temp = current;
+                    // while(temp != null )
+                    // {
+                    //     Logger.Log($"\tTileid:{temp.tile.Id} rowIndex:{temp.rowIndex} colIndex:{temp.colIndex}");
+                    //     temp = temp.parent;
+                    // }
+                    // OnPathFound?.Invoke();
+                    // break;
                 }
 
                 // Logger.Log(" current tile is " + current.tile.Id + " at pos " + current.rowIndex + " , " + current.colIndex);
-                void CheckAndAddNeighbourTile(int rowIndex, int colIndex )
+                void CheckAndAddNeighbourTile(int rowIndex, int colIndex)
                 {
                     if (rowIndex >= tileGrid.GetLength(0) || rowIndex < 0)
                     {
