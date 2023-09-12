@@ -60,14 +60,14 @@ namespace LifeIn2D.Entities
         public bool ContainsEntryFor(MergeDirection mergeDirection)
         {
             mergeDirection = GetOppositeDirectionFor(mergeDirection);
-            // Logger.Log("opp direction " + mergeDirection);
+            Logger.Instance.Log("opp direction " + mergeDirection);
             return Contains(mergeDirection);
         }
         public bool Contains(MergeDirection mergeDirection)
         {
             if (_mergeDirections == null)
             {
-                Logger.LogError("[Tile.cs/Contains]: Merge directions array is null for " + Id);
+                Logger.Instance.LogError("[Tile.cs/Contains]: Merge directions array is null for " + Id);
                 return false;
             }
             // Logger.Log("current tile " + Id + " with merge " + string.Join(",", _mergeDirections));
@@ -91,7 +91,7 @@ namespace LifeIn2D.Entities
                 case MergeDirection.Right:
                     return MergeDirection.Left;
             }
-            Logger.LogError("Opposite not defined for " + mergeDirection);
+            Logger.Instance.LogError("Opposite not defined for " + mergeDirection);
             return MergeDirection.Up;
         }
     }

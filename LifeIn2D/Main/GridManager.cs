@@ -77,7 +77,9 @@ namespace LifeIn2D.Main
 
         public void FindPath()
         {
-            System.Console.Clear();
+            ILogger logger = Logger.Instance;
+            logger.Clear();
+            // FileLogger.Clear();
             //make a queue 
             Queue<TilePos> queue = new Queue<TilePos>();
             for (int i = 0; i < grid.GetLength(0); i++)
@@ -93,66 +95,66 @@ namespace LifeIn2D.Main
                         queue.Enqueue(new TilePos(i, j, tileGrid[i, j]));
                 }
             }
-            Logger.LogWarning("queue count" + queue.Count+"/m The destnations are "+string.Join(",",_destinations.Select(d => d.ToString())));
+            logger.LogWarning("queue count" + queue.Count+"/m The destnations are "+string.Join(",",_destinations.Select(d => d.ToString())));
             List<TileID> tempDestinations = new List<TileID>(){TileID.Dest_Down,TileID.Dest_Left,TileID.Dest_Right,TileID.Dest_Up};
             int destinationsCount = _destinations.Count;
             while (queue.Count > 0)
             {
                 TilePos current = queue.Dequeue();
                 current.tile.IsVisited = true;
-                Logger.Log("current Tile is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
+                logger.Log("current Tile is " + current.tile.Id + " index is row " + current.rowIndex + " col " + current.colIndex);
                 if (tempDestinations.Contains(current.tile.Id))
                 {
                     destinationsCount--;
-                    Logger.LogError("removinf tile : "+current.tile.Id);
+                    logger.LogError("removinf tile : "+current.tile.Id);
                     if(destinationsCount == 0)
                     {
-                        Logger.Log("    path is present to brain");
+                        logger.Log("    path is present to brain");
                         OnPathFound?.Invoke();
                         break;
                     }
                 }
 
-                Logger.Log(" current tile is " + current.tile.Id + " at pos " + current.rowIndex + " , " + current.colIndex);
+                logger.Log(" current tile is " + current.tile.Id + " at pos " + current.rowIndex + " , " + current.colIndex);
                 void CheckAndAddNeighbourTile(int rowIndex, int colIndex, MergeDirection mergeDirection)
                 {
                     if (rowIndex >= tileGrid.GetLength(0) || rowIndex < 0)
                     {
-                        Logger.Log("row index is out of grid length");
+                        logger.Log(" row index is out of grid length");
                         return;
                     }
                     if (colIndex >= tileGrid.GetLength(1) || colIndex < 0)
                     {
-                        Logger.Log("column index is out of grid length");
+                        logger.Log(" column index is out of grid length");
                         return;
                     }
                     Tile neighbourTile = tileGrid[rowIndex, colIndex];
-                    Logger.Log(" row index and col index is present for " + neighbourTile.Id + " with r :" + rowIndex + ", c : " + colIndex);
+                    logger.Log(" row index and col index is present for " + neighbourTile.Id + " with r :" + rowIndex + ", c : " + colIndex);
                     if (neighbourTile.IsVisited == true)
                     {
-                        Logger.Log("  Neighbour tile is already visited!");
+                        logger.Log("  Neighbour tile is already visited!");
                         return;
                     }
                     if (neighbourTile.Id == TileID.None)
                     {
-                        Logger.Log("  Tile id is None!");
+                        logger.Log("  Tile id is None!");
                         return;
                     }
-                    Logger.Log(" Neighbour tile id is " + neighbourTile.Id + " with mergerdirections " + string.Join(",", neighbourTile.MergeDirections));
+                    logger.Log(" Neighbour tile id is " + neighbourTile.Id + " with mergerdirections " + string.Join(",", neighbourTile.MergeDirections));
                     if (current.tile.Contains(mergeDirection) == false)
                     {
-                        Logger.Log("  Current tile does not contain direction " + mergeDirection);
+                        logger.Log("  Current tile does not contain direction " + mergeDirection);
                         return;
                     }
-                    Logger.Log(" current tile also contains direction " + mergeDirection);
+                    logger.Log(" current tile also contains direction " + mergeDirection);
                     if (neighbourTile.ContainsEntryFor(mergeDirection) == false)
                     {
-                        Logger.Log("  Neighour Tile {neighbourTile.ID} does not contain entry for direction {mergeDirection}");
+                        logger.Log($"  Neighour Tile {neighbourTile.Id} does not contain entry for direction {mergeDirection}");
                         return;
                     }
-                    Logger.Log(" neighbour tile also contains entry direction " + mergeDirection);
+                    logger.Log(" neighbour tile also contains entry direction " + mergeDirection);
                     TilePos tilePos = new TilePos(rowIndex, colIndex, neighbourTile);
-                    Logger.Log("    enqueing tile " + tilePos.tile.Id);
+                    logger.Log("    enqueing tile " + tilePos.tile.Id);
                     queue.Enqueue(tilePos);
                 }
                 CheckAndAddNeighbourTile(current.rowIndex + 1, current.colIndex, MergeDirection.Down);

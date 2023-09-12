@@ -1,0 +1,70 @@
+queue count1/m The destnations are Dest_Down,Dest_Up,Dest_Up,Dest_Right
+current Tile is Heart index is row 2 col 2
+ current tile is Heart at pos 2 , 2
+ row index and col index is present for None with r :3, c : 2
+  Neighbour tile is already visited!
+ row index and col index is present for None with r :1, c : 2
+  Neighbour tile is already visited!
+ row index and col index is present for Threeway_rot90 with r :2, c : 3
+ Neighbour tile id is Threeway_rot90 with mergerdirections Up,Left,Right
+ current tile also contains direction Right
+ neighbour tile also contains entry direction Right
+    enqueing tile Threeway_rot90
+ row index and col index is present for Threeway_normal with r :2, c : 1
+ Neighbour tile id is Threeway_normal with mergerdirections Up,Down,Right
+ current tile also contains direction Left
+ neighbour tile also contains entry direction Left
+    enqueing tile Threeway_normal
+current Tile is Threeway_rot90 index is row 2 col 3
+ current tile is Threeway_rot90 at pos 2 , 3
+ row index and col index is present for Horizontal with r :3, c : 3
+ Neighbour tile id is Horizontal with mergerdirections Left,Right
+  Current tile does not contain direction Down
+ row index and col index is present for Vertical with r :1, c : 3
+ Neighbour tile id is Vertical with mergerdirections Up,Down
+ current tile also contains direction Up
+ neighbour tile also contains entry direction Up
+    enqueing tile Vertical
+ row index and col index is present for None with r :2, c : 4
+  Neighbour tile is already visited!
+ row index and col index is present for Heart with r :2, c : 2
+  Neighbour tile is already visited!
+current Tile is Threeway_normal index is row 2 col 1
+ current tile is Threeway_normal at pos 2 , 1
+ row index and col index is present for Horizontal with r :3, c : 1
+ Neighbour tile id is Horizontal with mergerdirections Left,Right
+ current tile also contains direction Down
+  Neighour Tile {neighbourTile.ID} does not contain entry for direction {mergeDirection}
+ row index and col index is present for Vertical with r :1, c : 1
+ Neighbour tile id is Vertical with mergerdirections Up,Down
+ current tile also contains direction Up
+ neighbour tile also contains entry direction Up
+    enqueing tile Vertical
+ row index and col index is present for Heart with r :2, c : 2
+  Neighbour tile is already visited!
+ row index and col index is present for None with r :2, c : 0
+  Neighbour tile is already visited!
+current Tile is Vertical index is row 1 col 3
+ current tile is Vertical at pos 1 , 3
+ row index and col index is present for Threeway_rot90 with r :2, c : 3
+  Neighbour tile is already visited!
+ row index and col index is present for L_normal with r :0, c : 3
+ Neighbour tile id is L_normal with mergerdirections Up,Right
+ current tile also contains direction Up
+  Neighour Tile {neighbourTile.ID} does not contain entry for direction {mergeDirection}
+ row index and col index is present for None with r :1, c : 4
+  Neighbour tile is already visited!
+ row index and col index is present for None with r :1, c : 2
+  Neighbour tile is already visited!
+current Tile is Vertical index is row 1 col 1
+ current tile is Vertical at pos 1 , 1
+ row index and col index is present for Threeway_normal with r :2, c : 1
+  Neighbour tile is already visited!
+ row index and col index is present for L_rot90 with r :0, c : 1
+ Neighbour tile id is L_rot90 with mergerdirections Left,Up
+ current tile also contains direction Up
+  Neighour Tile {neighbourTile.ID} does not contain entry for direction {mergeDirection}
+ row index and col index is present for None with r :1, c : 2
+  Neighbour tile is already visited!
+ row index and col index is present for None with r :1, c : 0
+  Neighbour tile is already visited!

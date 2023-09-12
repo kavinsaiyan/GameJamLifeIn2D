@@ -1,24 +1,39 @@
 using System;
 namespace LifeIn2D
 {
-    public class Logger
+    public class Logger :ILogger
     {
-        public static void Log(string message)
+        private static Logger instance;
+        public static ILogger Instance
+        {
+            get
+            {
+                if (instance == null)
+                    instance = new Logger();
+                return instance;
+            }
+        }
+        public void Log(string message)
         {
             LogMessage(message, ConsoleColor.White, "INFO");
         }
 
-        public static void LogWarning(string message)
+        public void LogWarning(string message)
         {
             LogMessage(message, ConsoleColor.Yellow, "WARNING");
         }
 
-        public static void LogError(string message)
+        public void LogError(string message)
         {
             LogMessage(message, ConsoleColor.Red, "ERROR");
         }
 
-        private static void LogMessage(string message, ConsoleColor color, string messageType)
+        public void Clear()
+        {
+            Console.Clear();
+        }
+
+        public void LogMessage(string message, ConsoleColor color, string messageType)
         {
             Console.ForegroundColor = color;
             Console.WriteLine($"[{DateTime.Now}] [{messageType}] {message}");

@@ -102,30 +102,30 @@ namespace LifeIn2D.Main
                         MergeDirection.Up,
                         MergeDirection.Down,
                     }, 0, pos);
-                case TileID.Dest_Down:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_bottom_entry"),
-                    new MergeDirection[]{
-                        MergeDirection.Down,
-                    },0,pos);
-                case TileID.Dest_Right:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_right_entry"),
-                    new MergeDirection[]{
-                        MergeDirection.Right,
-                    },MathHelper.ToRadians(90),pos);
-                case TileID.Dest_Up:
-                    return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_top_entry"),
-                    new MergeDirection[]{
-                        MergeDirection.Up,
-                    },MathHelper.ToRadians(180),pos);
                 case TileID.Dest_Left:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_left_entry"),
                     new MergeDirection[]{
                         MergeDirection.Left,
+                    },0,pos);
+                case TileID.Dest_Down:
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_left_entry"),
+                    new MergeDirection[]{
+                        MergeDirection.Down,
+                    },MathHelper.ToRadians(90),pos);
+                case TileID.Dest_Right:
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_left_entry"),
+                    new MergeDirection[]{
+                        MergeDirection.Right,
+                    },MathHelper.ToRadians(180),pos);
+                case TileID.Dest_Up:
+                    return new Tile((TileID)id, contentManager.Load<Texture2D>("destination_left_entry"),
+                    new MergeDirection[]{
+                        MergeDirection.Up,
                     },MathHelper.ToRadians(270),pos);
                 case TileID.None:
                     return new Tile(TileID.None, null, null, 0, pos);
             }
-            Logger.LogError("[TileCreator.cs/CreateTile]: no graphic found for creating the tile id " + id);
+            Logger.Instance.LogError("[TileCreator.cs/CreateTile]: no graphic found for creating the tile id " + id);
             return new Tile(TileID.None, null, null, 0, pos);
         }
     }
