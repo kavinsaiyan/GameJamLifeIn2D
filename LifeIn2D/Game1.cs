@@ -21,7 +21,6 @@ namespace LifeIn2D
         private InputManager _inputManager;
         private AudioManager _audioManager;
         private LevelLoader _levelLoader;
-        private LevelGenerator _levelGenerator;
 
         private Timer _timer;
         private TextDisplayAction _displayAction;
@@ -41,13 +40,13 @@ namespace LifeIn2D
             _inputManager = new InputManager();
 
             _levelLoader = new LevelLoader();
+            _levelLoader.currentLevel = 5;
             _levelLoader.Load();
 
             _gridManager = new GridManager();
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
 
-            _levelGenerator = new LevelGenerator();
 
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
@@ -93,9 +92,6 @@ namespace LifeIn2D
             _gridManager.grid = _levelLoader.grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
                                     , _levelLoader.destinations);
-            _levelGenerator.grid = _levelLoader.grid; 
-            _levelGenerator.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    , _levelLoader.destinations);
         }
 
         private void OnTileCreated(Tile tile)
@@ -120,8 +116,6 @@ namespace LifeIn2D
             CustomKeyboard.Instance.Update();
             if (CustomKeyboard.Instance.IsKeyClicked(Keys.F))
                 _gridManager.FindPath();
-            if (CustomKeyboard.Instance.IsKeyClicked(Keys.K))
-                _levelGenerator.FindPath();
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
 
