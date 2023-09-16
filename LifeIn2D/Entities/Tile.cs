@@ -27,6 +27,7 @@ namespace LifeIn2D.Entities
         public int Width => _graphic.Width;
         public int Height => _graphic.Height;
 
+        private Color _color;
 
         public Tile(TileID id, Texture2D graphic, MergeDirection[] mergeDirections, float angle, Vector2 position)
         {
@@ -35,6 +36,7 @@ namespace LifeIn2D.Entities
             _angle = angle;
             _position = position;
             _id = id;
+            SetTileConnectionStatus(false);
             if (_id != TileID.None)
             {
                 _origin = new Vector2(_graphic.Width / 2, _graphic.Height / 2);
@@ -42,6 +44,7 @@ namespace LifeIn2D.Entities
             else
                 _origin = Vector2.Zero;
         }
+        
 
         public void Rotate()
         {
@@ -54,7 +57,7 @@ namespace LifeIn2D.Entities
 
         public void Draw(Sprites sprites)
         {
-            sprites.Draw(_graphic, null, _origin, _position, _angle, Vector2.One, Color.White);
+            sprites.Draw(_graphic, null, _origin, _position, _angle, Vector2.One, _color);
         }
 
         public bool ContainsEntryFor(MergeDirection mergeDirection)
@@ -78,6 +81,15 @@ namespace LifeIn2D.Entities
             }
             return false;
         }
+
+        public void SetTileConnectionStatus(bool status)
+        {
+            if(status)
+                _color = Color.Red;
+            else 
+                _color = Color.White;
+        }
+
         public static MergeDirection GetOppositeDirectionFor(MergeDirection mergeDirection)
         {
             switch (mergeDirection)

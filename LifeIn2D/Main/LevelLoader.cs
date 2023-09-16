@@ -11,7 +11,7 @@ namespace LifeIn2D
         public int[,] grid;
         public int currentLevel;
         int rows, columns;
-        public TileID[] destinations;
+        public int destinationsCount;
         public LevelLoadingState state = LevelLoadingState.None;
         public LevelLoader()
         {
@@ -47,12 +47,7 @@ namespace LifeIn2D
                     if(state == LevelLoadingState.Destinations)
                     {
                         string[] split = line.Split(",");
-                        destinations = new TileID[split.Length];
-                        for (int i = 0; i < destinations.Length; i++)
-                        {
-                            if(int.TryParse(split[i],out int destination))
-                                destinations[i] = (TileID)destination; 
-                        }
+                        destinationsCount = split.Length;
                         state = LevelLoadingState.Row;
                         continue;
                     }

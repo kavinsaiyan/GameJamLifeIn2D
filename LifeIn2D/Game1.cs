@@ -91,7 +91,7 @@ namespace LifeIn2D
             
             _gridManager.grid = _levelLoader.grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    , _levelLoader.destinations);
+                                    , _levelLoader.destinationsCount);
         }
 
         private void OnTileCreated(Tile tile)
