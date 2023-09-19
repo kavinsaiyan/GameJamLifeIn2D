@@ -77,8 +77,8 @@ namespace LifeIn2D.Main
 
         public void FindPath()
         {
-            ILogger logger = Logger.Instance;
-            logger.Clear();
+            // ILogger logger = Logger.Instance;
+            // logger.Clear();
             // FileLogger.Clear();
             //make a queue 
             Queue<TilePos> queue = new Queue<TilePos>();
@@ -98,7 +98,7 @@ namespace LifeIn2D.Main
                         queue.Enqueue(new TilePos(i, j, tileGrid[i, j]));
                 }
             }
-            logger.LogWarning("queue count" + queue.Count+"/m ");
+            // logger.LogWarning("queue count" + queue.Count);
             List<TileID> tempDestinations = new List<TileID>() { TileID.Dest_Down, TileID.Dest_Left, TileID.Dest_Right, TileID.Dest_Up };
             int destinationsCount = _destinationsCount;
             while (queue.Count > 0)

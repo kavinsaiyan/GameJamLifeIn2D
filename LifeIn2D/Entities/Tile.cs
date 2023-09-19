@@ -63,7 +63,7 @@ namespace LifeIn2D.Entities
         public bool ContainsEntryFor(MergeDirection mergeDirection)
         {
             mergeDirection = GetOppositeDirectionFor(mergeDirection);
-            Logger.Instance.Log("opp direction " + mergeDirection);
+            // Logger.Instance.Log("opp direction " + mergeDirection);
             return Contains(mergeDirection);
         }
         public bool Contains(MergeDirection mergeDirection)
