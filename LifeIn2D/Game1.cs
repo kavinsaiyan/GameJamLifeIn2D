@@ -40,7 +40,7 @@ namespace LifeIn2D
             _inputManager = new InputManager();
 
             _levelLoader = new LevelLoader();
-            _levelLoader.currentLevel = 6;
+            _levelLoader.currentLevel = 7;
             _levelLoader.Load();
 
             _gridManager = new GridManager();
