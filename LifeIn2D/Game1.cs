@@ -21,6 +21,7 @@ namespace LifeIn2D
         private InputManager _inputManager;
         private AudioManager _audioManager;
         private LevelLoader _levelLoader;
+        private OrganTileManager _organTileManager;
 
         private Timer _timer;
         private TextDisplayAction _displayAction;
@@ -47,11 +48,28 @@ namespace LifeIn2D
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
 
-
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
             _timer = new Timer();
+            InitalizeOrganTileManager();
             base.Initialize();
+        }
+
+        private void InitalizeOrganTileManager()
+        {
+            _organTileManager.Initialize();
+            for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < _gridManager.tileGrid.GetLength(1); j++)
+                {
+                    Tile tile = gridManager.tileGrid[i, j].tile;
+                    if (tile.Id != TileID.None)
+                    {
+                        _organTileManager.CreateOrganIfPossible(tile, Content, out OrganTile organTile);
+                        break;
+                    }
+                }
+            }
         }
 
         protected override void LoadContent()
@@ -93,6 +111,8 @@ namespace LifeIn2D
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
                                     , _levelLoader.destinationsCount);
             _gridManager.FindPath();
+
+            InitalizeOrganTileManager();
         }
 
         private void OnTileCreated(Tile tile)
@@ -119,6 +139,7 @@ namespace LifeIn2D
                 _gridManager.FindPath();
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            _organTileManager.Draw(_sprites);
 
             base.Update(gameTime);
         }

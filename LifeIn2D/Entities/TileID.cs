@@ -18,7 +18,7 @@ namespace LifeIn2D.Entities
         Brain = 12,
         Kidney = 13,
         Lungs = 14,
-        Intestine = 15,
+        Eye = 15,
         Dest_Down =16,
         Dest_Up = 17,
         Dest_Right = 18,
