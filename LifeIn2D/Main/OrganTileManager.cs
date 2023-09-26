@@ -21,7 +21,7 @@ namespace LifeIn2D.Main
             organTiles.Clear();
         }
 
-        public static bool CreateOrganIfPossible(Tile tile, ContentManager content, out OrganTile organTile)
+        public bool CreateOrganIfPossible(Tile tile, ContentManager content, out OrganTile organTile)
         {
             organTile = null;
             if (tile.Id == TileID.Dest_left || tile.Id == TileID.Dest_Down
