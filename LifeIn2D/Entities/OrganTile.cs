@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using System.Runtime.Versioning;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,12 +15,11 @@ namespace LifeIn2D.Entities
         {
             _organGraphic = organGraphic;
             _tile = tile;
-
         }
 
         public void Draw(Sprites sprites)
         {
-            sprites.Draw(_graphic, null, new Vector2(0,0), _tile.Position, 0, Vector2.One, Color.White);
+            sprites.Draw(_organGraphic, null, _tile.Origin, _tile.Position, 0, Vector2.One, Color.White);
         }
     }
 }

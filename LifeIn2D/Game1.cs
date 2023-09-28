@@ -41,7 +41,7 @@ namespace LifeIn2D
             _inputManager = new InputManager();
 
             _levelLoader = new LevelLoader();
-            _levelLoader.currentLevel = 7;
+            _levelLoader.currentLevel = 1;
             _levelLoader.Load();
 
             _gridManager = new GridManager();
@@ -51,26 +51,11 @@ namespace LifeIn2D
             CustomMouse.Instance.Initialize(GraphicsDevice.Viewport.Height);
 
             _timer = new Timer();
-            InitalizeOrganTileManager();
+
+            _organTileManager = new OrganTileManager();
             base.Initialize();
         }
 
-        private void InitalizeOrganTileManager()
-        {
-            _organTileManager.Initialize();
-            for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
-            {
-                for (int j = 0; j < _gridManager.tileGrid.GetLength(1); j++)
-                {
-                    Tile tile = gridManager.tileGrid[i, j].tile;
-                    if (tile.Id != TileID.None)
-                    {
-                        _organTileManager.CreateOrganIfPossible(tile, Content, out OrganTile organTile);
-                        break;
-                    }
-                }
-            }
-        }
 
         protected override void LoadContent()
         {
@@ -83,11 +68,24 @@ namespace LifeIn2D
 
         private void InitializeLevelText()
         {
-            _displayAction = new TextDisplayAction(2, "Level " + _levelLoader.currentLevel, _jupiteroidFont, 
-                            new Vector2(GraphicsDevice.Viewport.Width/2 - 100,GraphicsDevice.Viewport.Height/2 + 50),
+            _displayAction = new TextDisplayAction(2, "Level " + _levelLoader.currentLevel, _jupiteroidFont,
+                            new Vector2(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 + 50),
                             Color.Black);
             _displayAction.OnComplete += OnTextDisplayComplete;
             _timer.AddAction(_displayAction);
+        }
+        private void InitalizeOrganTileManager()
+        {
+            _organTileManager.Initialize();
+            for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < _gridManager.tileGrid.GetLength(1); j++)
+                {
+                    Tile tile = _gridManager.tileGrid[i, j];
+                    if (tile.Id != TileID.None)
+                        _organTileManager.CreateOrganIfPossible(tile, Content, out OrganTile organTile);
+                }
+            }
         }
 
         private void OnPathFound()
@@ -106,7 +104,7 @@ namespace LifeIn2D
         {
             _displayGame = true;
             _levelLoader.Load();
-            
+
             _gridManager.grid = _levelLoader.grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
                                     , _levelLoader.destinationsCount);
@@ -139,7 +137,6 @@ namespace LifeIn2D
                 _gridManager.FindPath();
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
-            _organTileManager.Draw(_sprites);
 
             base.Update(gameTime);
         }
@@ -152,6 +149,7 @@ namespace LifeIn2D
             if (_displayGame)
             {
                 _gridManager.Draw(_sprites);
+                _organTileManager.Draw(_sprites);
                 // _inputManager.Draw(_sprites); // drawing debug button outline
             }
             _displayAction.Draw(_sprites);

@@ -23,29 +23,33 @@ namespace LifeIn2D.Main
 
         public bool CreateOrganIfPossible(Tile tile, ContentManager content, out OrganTile organTile)
         {
+            // Logger.Instance.Log("tile is " + tile.Id);
             organTile = null;
-            if (tile.Id == TileID.Dest_left || tile.Id == TileID.Dest_Down
-                || tile.Id == TileID.Dest_right || tile.id == tileid.dest_up)
+            if (tile.Id == TileID.Dest_Left || tile.Id == TileID.Dest_Down
+                || tile.Id == TileID.Dest_Right || tile.Id == TileID.Dest_Up)
             {
-                texture2d graphic = null;
+                Texture2D graphic;
+                // Logger.Instance.Log("tile is 1 " + tile.Id);
                 if (organGraphics.Count > 0)
                 {
-                    int randIndex= CommonFunctions.RandomRangeInt(0, organGrahpics.Count);
-                    graphic = organGraphics[randIndex];
-                    organGraphics.Remove(randIndex);
+                    int randIndex = CommonFunctions.RandomRangeInt(0, organGraphics.Count);
+                    graphic = content.Load<Texture2D>(organGraphics[randIndex]);
+                    // Logger.Instance.Log("removeing " + organGraphics[randIndex]);
+                    organGraphics.RemoveAt(randIndex);
                 }
                 else
-                    graphic = content.Load<Texture2D>("Muscle_Tile");
-                organtile = new organtile(graphic, tile);
+                    graphic = content.Load<Texture2D>("Muscle_tile");
+                organTile = new OrganTile(graphic, tile);
+                organTiles.Add(organTile);
                 return true;
             }
             return false;
         }
 
-       public void Draw(Sprites sprites)
-       {
-            for(int i=0;i<organTiles.Count;i++)
+        public void Draw(Sprites sprites)
+        {
+            for (int i = 0; i < organTiles.Count; i++)
                 organTiles[i].Draw(sprites);
-       } 
+        }
     }
 }
