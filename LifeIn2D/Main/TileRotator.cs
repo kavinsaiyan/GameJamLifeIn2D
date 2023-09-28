@@ -40,7 +40,7 @@ namespace LifeIn2D.Main
                     return TileID.Dest_Left;
             }
             Logger.Instance.LogError("Tile rotation not defined for " + tileID);
-            return TileID.None;
+            return tileID;
         }
     }
 }

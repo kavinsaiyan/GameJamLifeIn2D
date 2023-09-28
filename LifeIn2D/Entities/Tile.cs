@@ -1,4 +1,5 @@
 using System;
+using CodingMath.Utils;
 using LifeIn2D.Input;
 using LifeIn2D.Main;
 using Microsoft.Xna.Framework;
@@ -28,12 +29,16 @@ namespace LifeIn2D.Entities
         public int Height => _graphic.Height;
 
         private Color _color;
+        private float _currentRotaion;
+        private float _targetRotaion;
 
         public Tile(TileID id, Texture2D graphic, MergeDirection[] mergeDirections, float angle, Vector2 position)
         {
             _graphic = graphic;
             _mergeDirections = mergeDirections;
             _angle = angle;
+            _currentRotaion = angle;
+            _targetRotaion = angle;
             _position = position;
             _id = id;
             SetTileConnectionStatus(false);
@@ -52,7 +57,14 @@ namespace LifeIn2D.Entities
             for (int i = 0; i < _mergeDirections.Length; i++)
                 _mergeDirections[i] = (MergeDirection)(((int)_mergeDirections[i] + 1) % 4);
             _angle += MathHelper.PiOver2;
+            _currentRotaion = _angle;
             _id = TileRotator.GetNextRotation(_id);
+        }
+
+        public void Update(float deltaTime)
+        {
+            // TODO
+            // _currentRotaion = CommonFunctions.Lerp();
         }
 
         public void Draw(Sprites sprites)
