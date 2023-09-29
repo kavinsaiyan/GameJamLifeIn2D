@@ -1,6 +1,4 @@
-using System;
 using CodingMath.Utils;
-using LifeIn2D.Input;
 using LifeIn2D.Main;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -57,19 +55,21 @@ namespace LifeIn2D.Entities
             for (int i = 0; i < _mergeDirections.Length; i++)
                 _mergeDirections[i] = (MergeDirection)(((int)_mergeDirections[i] + 1) % 4);
             _angle += MathHelper.PiOver2;
-            _currentRotaion = _angle;
+            _targetRotaion = _angle;
             _id = TileRotator.GetNextRotation(_id);
         }
 
         public void Update(float deltaTime)
         {
-            // TODO
-            // _currentRotaion = CommonFunctions.Lerp();
+            if(_currentRotaion - _targetRotaion < 0.00000001f)
+            {
+                _currentRotaion += deltaTime * 10;
+            }
         }
 
         public void Draw(Sprites sprites)
         {
-            sprites.Draw(_graphic, null, _origin, _position, _angle, Vector2.One, _color);
+            sprites.Draw(_graphic, null, _origin, _position, _currentRotaion, Vector2.One, _color);
         }
 
         public bool ContainsEntryFor(MergeDirection mergeDirection)

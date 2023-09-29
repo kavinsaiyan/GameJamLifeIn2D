@@ -135,6 +135,7 @@ namespace LifeIn2D
             CustomKeyboard.Instance.Update();
             if (CustomKeyboard.Instance.IsKeyClicked(Keys.F))
                 _gridManager.FindPath();
+            _gridManager.Update(gameTime);
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
 

@@ -55,10 +55,17 @@ namespace LifeIn2D.Main
             }
         }
 
-
         public void Update(GameTime gameTime)
         {
-
+            if (tileGrid == null || tileGrid.Length == 0)
+                return;
+            for (int i = 0; i < tileGrid.GetLength(0); i++)
+            {
+                for (int j = 0; j < tileGrid.GetLength(1); j++)
+                {
+                    tileGrid[i, j].Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+                }
+            }
         }
 
         public void Draw(Sprites sprites)
