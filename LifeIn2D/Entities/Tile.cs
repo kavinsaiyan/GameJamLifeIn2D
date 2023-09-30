@@ -1,3 +1,4 @@
+using System;
 using CodingMath.Utils;
 using LifeIn2D.Main;
 using Microsoft.Xna.Framework;
@@ -61,10 +62,17 @@ namespace LifeIn2D.Entities
 
         public void Update(float deltaTime)
         {
-            if(_currentRotaion - _targetRotaion < 0.00000001f)
-            {
-                _currentRotaion += deltaTime * 10;
-            }
+           float diff = _targetRotaion - _currentRotaion;
+           float rotationStep = deltaTime * 10f;
+           if(Math.Abs(diff) > rotationStep)
+           {
+                if(diff > 0)
+                    _currentRotaion += rotationStep;
+                else 
+                    _currentRotaion -= rotationStep;
+           }
+           else 
+                _currentRotaion = _targetRotaion;
         }
 
         public void Draw(Sprites sprites)
