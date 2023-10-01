@@ -1,5 +1,4 @@
 using System;
-using CodingMath.Utils;
 using LifeIn2D.Main;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
