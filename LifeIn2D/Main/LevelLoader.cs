@@ -44,11 +44,11 @@ namespace LifeIn2D
                         state = LevelLoadingState.Destinations;
                         continue;
                     }
-                    if(state == LevelLoadingState.Destinations)
+                    if(state == LevelLoadingState.Destinations 
+                        && int.TryParse(line,out int destinationsCount))
                     {
-                        string[] split = line.Split(",");
-                        destinationsCount = split.Length;
                         state = LevelLoadingState.Row;
+                        this.destinationsCount = destinationsCount;
                         continue;
                     }
                     if (state == LevelLoadingState.Row && int.TryParse(line, out int row))
