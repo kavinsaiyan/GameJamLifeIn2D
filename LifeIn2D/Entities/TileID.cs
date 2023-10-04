@@ -17,11 +17,13 @@ namespace LifeIn2D.Entities
         Heart = 11,
         Brain = 12,
         Kidney = 13,
-        Lungs = 14,
+        Liver = 14,
         Eye = 15,
         Dest_Down =16,
         Dest_Up = 17,
         Dest_Right = 18,
         Dest_Left = 19,
+        Muscle = 20,
+        Stomach = 21,
     }
 }

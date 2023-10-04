@@ -93,7 +93,6 @@ namespace LifeIn2D.Main
                     }, 0, pos);
                 case TileID.Brain:
                 case TileID.Kidney:
-                case TileID.Lungs:
                     return new Tile((TileID)id, contentManager.Load<Texture2D>("Player"),
                     new MergeDirection[]{
                         MergeDirection.Left,

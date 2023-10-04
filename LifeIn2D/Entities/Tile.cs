@@ -1,4 +1,5 @@
 using System;
+using System.Linq.Expressions;
 using LifeIn2D.Main;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,8 +28,13 @@ namespace LifeIn2D.Entities
         public int Height => _graphic.Height;
 
         private Color _color;
+        public bool IsConnected { get; private set; }
         private float _currentRotaion;
         private float _targetRotaion;
+        public float TargetRotatin => _targetRotaion;
+        public bool IsRotating { get; private set; }
+        public event Action OnRotateAnimationBegin;
+        public event Action OnRotateAnimationComplete;
 
         public Tile(TileID id, Texture2D graphic, MergeDirection[] mergeDirections, float angle, Vector2 position)
         {
@@ -39,6 +45,7 @@ namespace LifeIn2D.Entities
             _targetRotaion = angle;
             _position = position;
             _id = id;
+            _color = Color.White;
             SetTileConnectionStatus(false);
             if (_id != TileID.None)
             {
@@ -47,31 +54,42 @@ namespace LifeIn2D.Entities
             else
                 _origin = Vector2.Zero;
         }
-        
+
 
         public void Rotate()
         {
+            if (_id == TileID.Heart)
+                return;
             // Logger.Log("Rotate Tile");
             for (int i = 0; i < _mergeDirections.Length; i++)
                 _mergeDirections[i] = (MergeDirection)(((int)_mergeDirections[i] + 1) % 4);
             _angle += MathHelper.PiOver2;
             _targetRotaion = _angle;
             _id = TileRotator.GetNextRotation(_id);
+            IsRotating = true;
+            OnRotateAnimationBegin?.Invoke();
         }
 
         public void Update(float deltaTime)
         {
-           float diff = _targetRotaion - _currentRotaion;
-           float rotationStep = deltaTime * 10f;
-           if(Math.Abs(diff) > rotationStep)
-           {
-                if(diff > 0)
+            float diff = _targetRotaion - _currentRotaion;
+            float rotationStep = deltaTime * 10f;
+            if (Math.Abs(diff) > rotationStep)
+            {
+                if (diff > 0)
                     _currentRotaion += rotationStep;
-                else 
+                else
                     _currentRotaion -= rotationStep;
-           }
-           else 
+            }
+            else
+            {
                 _currentRotaion = _targetRotaion;
+                if (IsRotating)
+                {
+                    IsRotating = false;
+                    OnRotateAnimationComplete?.Invoke();
+                }
+            }
         }
 
         public void Draw(Sprites sprites)
@@ -103,10 +121,7 @@ namespace LifeIn2D.Entities
 
         public void SetTileConnectionStatus(bool status)
         {
-            if(status)
-                _color = Color.Red;
-            else 
-                _color = Color.White;
+            IsConnected = status;
         }
 
         public static MergeDirection GetOppositeDirectionFor(MergeDirection mergeDirection)

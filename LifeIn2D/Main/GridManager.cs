@@ -16,6 +16,7 @@ namespace LifeIn2D.Main
         float xPos;
         float yPos;
         int _destinationsCount;
+        private List<TileBG> backgrounds = new List<TileBG>();
 
         public event System.Action<Tile> OnTileCreated;
         public event System.Action OnPathFound;
@@ -49,6 +50,7 @@ namespace LifeIn2D.Main
                     tileGrid[i, j] = TileCreator.CreateTile(grid[i, j], new Vector2(xPos, yPos), contentManager);
                     xPos += 64;
                     OnTileCreated?.Invoke(tileGrid[i, j]);
+                    backgrounds.Add(new TileBG(tileGrid[i,j], contentManager));
                 }
                 xPos = -cornorPos + width / 2;
                 yPos -= 64;
@@ -80,6 +82,10 @@ namespace LifeIn2D.Main
                         tileGrid[i, j].Draw(sprites);
                 }
             }
+            
+            for(int i=0; i<backgrounds.Count; i++)
+                backgrounds[i].Draw(sprites);
+
         }
 
         public void FindPath()
