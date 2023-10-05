@@ -18,20 +18,26 @@ namespace LifeIn2D.Entities
             Tile = tile;
             switch (tile.Id)
             {
-                case TileID.Brain:
-                case TileID.Kidney:
-                case TileID.Liver:
-                case TileID.Eye:
-                case TileID.Muscle:
-                    _background = contentManager.Load<Texture2D>("destination_left_entry_blood");
+                case TileID.Dest_Down:
+                case TileID.Dest_Up:
+                case TileID.Dest_Right:
+                case TileID.Dest_Left:
+                    _background = contentManager.Load<Texture2D>("destination_left_entry_Blood");
                     break;
                 case TileID.L_normal:
+                case TileID.L_rot180:
+                case TileID.L_rot90:
+                case TileID.L_rot270:
                     _background = contentManager.Load<Texture2D>("Tile_L_Blood");
                     break;
                 case TileID.Threeway_normal:
-                    _background = contentManager.Load<Texture2D>("Tile_Threeway_Blood");
+                case TileID.Threeway_rot180:
+                case TileID.Threeway_rot270:
+                case TileID.Threeway_rot90:
+                    _background = contentManager.Load<Texture2D>("Tile_ThreeWay_Blood");
                     break;
                 case TileID.Vertical:
+                case TileID.Horizontal:
                     _background = contentManager.Load<Texture2D>("Tile_Vertical_Blood");
                     break;
                 case TileID.Plus:
@@ -41,8 +47,9 @@ namespace LifeIn2D.Entities
                     _background = contentManager.Load<Texture2D>("HeartBG_Blood");
                     break;
             }
-            Tile.OnRotateAnimationBegin += TurnOn;
-            Tile.OnRotateAnimationComplete+= TurnOff;
+            Tile.OnRotateAnimationBegin += TurnOff;
+            Tile.OnRotateAnimationComplete += TurnOn;
+            TurnOn();
         }
 
         public void TurnOff()
@@ -57,9 +64,9 @@ namespace LifeIn2D.Entities
         {
             if (_canDraw)
             {
-                if (Tile.IsConnected == true)
-                    sprites.Draw(_background, null, Tile.Origin / 2, Tile.Position, 
-                     Tile.TargetRotatin, Vector2.One,Color.White);
+                if (Tile.IsVisited == true && _background != null)
+                    sprites.Draw(_background, null, Tile.Origin , Tile.Position, 
+                                    Tile.TargetRotatin, Vector2.One,Color.PaleVioletRed);
             }
         }
     }

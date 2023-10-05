@@ -28,7 +28,6 @@ namespace LifeIn2D.Entities
         public int Height => _graphic.Height;
 
         private Color _color;
-        public bool IsConnected { get; private set; }
         private float _currentRotaion;
         private float _targetRotaion;
         public float TargetRotatin => _targetRotaion;
@@ -46,7 +45,6 @@ namespace LifeIn2D.Entities
             _position = position;
             _id = id;
             _color = Color.White;
-            SetTileConnectionStatus(false);
             if (_id != TileID.None)
             {
                 _origin = new Vector2(_graphic.Width / 2, _graphic.Height / 2);
@@ -117,11 +115,6 @@ namespace LifeIn2D.Entities
                     return true;
             }
             return false;
-        }
-
-        public void SetTileConnectionStatus(bool status)
-        {
-            IsConnected = status;
         }
 
         public static MergeDirection GetOppositeDirectionFor(MergeDirection mergeDirection)

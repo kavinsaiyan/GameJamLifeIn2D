@@ -42,19 +42,21 @@ namespace LifeIn2D.Main
             xPos = -cornorPos + width / 2;
             yPos = cornorPos + height / 2;
             tileGrid = new Tile[grid.GetLength(0), grid.GetLength(1)];
+            backgrounds.Clear();
             for (int i = 0; i < rowCount; i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    // Logger.Log($"grid pos {i},{j} is {new Vector2(xPos, yPos)}");
                     tileGrid[i, j] = TileCreator.CreateTile(grid[i, j], new Vector2(xPos, yPos), contentManager);
                     xPos += 64;
+                    // Logger.Instance.Log($"grid pos {i},{j} is {new Vector2(xPos, yPos)} at {tileGrid[i,j].Id}");
+                    backgrounds.Add(new TileBG(tileGrid[i, j], contentManager));
                     OnTileCreated?.Invoke(tileGrid[i, j]);
-                    backgrounds.Add(new TileBG(tileGrid[i,j], contentManager));
                 }
                 xPos = -cornorPos + width / 2;
                 yPos -= 64;
             }
+            FindPath();
         }
 
         public void Update(GameTime gameTime)
@@ -74,6 +76,8 @@ namespace LifeIn2D.Main
         {
             if (grid == null)
                 return;
+            for (int i = 0; i < backgrounds.Count; i++)
+                backgrounds[i].Draw(sprites);
             for (var i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
@@ -82,10 +86,6 @@ namespace LifeIn2D.Main
                         tileGrid[i, j].Draw(sprites);
                 }
             }
-            
-            for(int i=0; i<backgrounds.Count; i++)
-                backgrounds[i].Draw(sprites);
-
         }
 
         public void FindPath()
@@ -102,10 +102,7 @@ namespace LifeIn2D.Main
                     if (tileGrid[i, j].Id == TileID.None)
                         tileGrid[i, j].IsVisited = true;
                     else
-                    {
-                        tileGrid[i, j].SetTileConnectionStatus(false);
                         tileGrid[i, j].IsVisited = false;
-                    }
                     if (tileGrid[i, j].Id == TileID.Heart)
                         //add the heart to the queue
                         queue.Enqueue(new TilePos(i, j, tileGrid[i, j]));
@@ -130,8 +127,6 @@ namespace LifeIn2D.Main
                         break;
                     }
                 }
-                else if (current.tile.Id != TileID.Heart)
-                    current.tile.SetTileConnectionStatus(true);
 
                 // logger.Log(" current tile is " + current.tile.Id + " at pos " + current.rowIndex + " , " + current.colIndex);
                 void CheckAndAddNeighbourTile(int rowIndex, int colIndex, MergeDirection mergeDirection)
