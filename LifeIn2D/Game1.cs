@@ -25,6 +25,7 @@ namespace LifeIn2D
 
         private Timer _timer;
         private TextDisplayAction _displayAction;
+        private WaitForDelayAction _waitForDelayAction;
         private SpriteFont _jupiteroidFont;
         private bool _displayGame = false;
         public Game1()
@@ -56,7 +57,6 @@ namespace LifeIn2D
             base.Initialize();
         }
 
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
@@ -64,6 +64,20 @@ namespace LifeIn2D
             _audioManager = new AudioManager(Content);
             _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
             InitializeLevelText();
+        }
+
+        private void InitalizeWaitForDelay()
+        {
+            _waitForDelayAction = new WaitForDelayAction(2);
+            _waitForDelayAction.OnComplete += OnDelayComplete;
+            _timer.AddAction(_waitForDelayAction);
+        }
+
+        private void OnDelayComplete()
+        {
+            _gridManager.Reset();
+            InitializeLevelText();
+            _displayGame = false;
         }
 
         private void InitializeLevelText()
@@ -74,6 +88,20 @@ namespace LifeIn2D
             _displayAction.OnComplete += OnTextDisplayComplete;
             _timer.AddAction(_displayAction);
         }
+
+        private void OnTextDisplayComplete()
+        {
+            _displayGame = true;
+            _levelLoader.Load();
+
+            _gridManager.grid = _levelLoader.grid;
+            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
+                                    , _levelLoader.destinationsCount);
+            _gridManager.FindPath();
+
+            InitalizeOrganTileManager();
+        }
+
         private void InitalizeOrganTileManager()
         {
             _organTileManager.Initialize();
@@ -93,24 +121,8 @@ namespace LifeIn2D
             _levelLoader.currentLevel++;
 
             _inputManager.RemoveAllButtons();
-            _gridManager.Reset();
 
-            InitializeLevelText();
-
-            _displayGame = false;
-        }
-
-        private void OnTextDisplayComplete()
-        {
-            _displayGame = true;
-            _levelLoader.Load();
-
-            _gridManager.grid = _levelLoader.grid;
-            _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    , _levelLoader.destinationsCount);
-            _gridManager.FindPath();
-
-            InitalizeOrganTileManager();
+            InitalizeWaitForDelay();
         }
 
         private void OnTileCreated(Tile tile)
