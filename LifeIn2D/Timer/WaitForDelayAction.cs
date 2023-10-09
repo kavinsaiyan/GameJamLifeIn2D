@@ -27,7 +27,7 @@ public class WaitForDelayAction : ITimedAction
 
     public void Start()
     {
-
+        OnBegin?.Invoke();
     }
 
     public void Update()

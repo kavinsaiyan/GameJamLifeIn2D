@@ -20,6 +20,8 @@ namespace LifeIn2D.Entities
         public MergeDirection[] MergeDirections => _mergeDirections;
         private float _angle;
         private Vector2 _position;
+        private Vector2 _scale = Vector2.One;
+        public Vector2 Scale { get => _scale; set => _scale = value; }
         public Vector2 Position { get => _position; }
         private bool _isVisited;
         public bool IsVisited { get => _isVisited; set => _isVisited = value; }
@@ -92,7 +94,7 @@ namespace LifeIn2D.Entities
 
         public void Draw(Sprites sprites)
         {
-            sprites.Draw(_graphic, null, _origin, _position, _currentRotaion, Vector2.One, _color);
+            sprites.Draw(_graphic, null, _origin, _position, _currentRotaion, _scale, _color);
         }
 
         public bool ContainsEntryFor(MergeDirection mergeDirection)

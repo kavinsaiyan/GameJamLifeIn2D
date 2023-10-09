@@ -22,6 +22,7 @@ namespace LifeIn2D
         private AudioManager _audioManager;
         private LevelLoader _levelLoader;
         private OrganTileManager _organTileManager;
+        private TileScaleAnimation _tileScaleAnimation;
 
         private Timer _timer;
         private TextDisplayAction _displayAction;
@@ -99,6 +100,14 @@ namespace LifeIn2D
                                     , _levelLoader.destinationsCount);
             _gridManager.FindPath();
 
+            for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
+               for(int j =0; j< _gridManager.tileGrid.GetLength(1); j++)
+                    if(_gridManager.tileGrid[i,j].Id == TileID.Heart)
+                    {
+                        _tileScaleAnimation = new TileScaleAnimation(_gridManager.tileGrid[i,j]);
+                        break;
+                    }
+
             InitalizeOrganTileManager();
         }
 
@@ -119,9 +128,7 @@ namespace LifeIn2D
         private void OnPathFound()
         {
             _levelLoader.currentLevel++;
-
             _inputManager.RemoveAllButtons();
-
             InitalizeWaitForDelay();
         }
 
@@ -150,6 +157,7 @@ namespace LifeIn2D
             _gridManager.Update(gameTime);
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
+            _tileScaleAnimation?.Update(gameTime);
 
             base.Update(gameTime);
         }
