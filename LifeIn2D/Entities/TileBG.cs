@@ -66,7 +66,7 @@ namespace LifeIn2D.Entities
             {
                 if (Tile.IsVisited == true && _background != null)
                     sprites.Draw(_background, null, Tile.Origin , Tile.Position, 
-                                    Tile.TargetRotatin, Vector2.One,Color.PaleVioletRed);
+                                    Tile.TargetRotatin, Vector2.One,Color.White);
             }
         }
     }

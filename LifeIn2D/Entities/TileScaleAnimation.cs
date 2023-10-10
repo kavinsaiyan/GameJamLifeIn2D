@@ -12,11 +12,11 @@ namespace LifeIn2D.Entities
         {
             _tile = tile;
         }
-
         public void Update(GameTime gameTime)
         {
             Vector2 scale = _tile.Scale;
-            double sin = Math.Abs(Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2 * Math.PI * 0.3f)*0.3f)+0.7f;
+
+            double sin = Math.Abs(Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2 * Math.PI * 0.1f)*0.1f)+0.9f;
             scale.X = scale.Y = (float)sin; 
             _tile.Scale = scale;
         }
