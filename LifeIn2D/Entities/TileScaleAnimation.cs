@@ -16,7 +16,7 @@ namespace LifeIn2D.Entities
         {
             Vector2 scale = _tile.Scale;
 
-            double sin = Math.Abs(Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2 * Math.PI * 0.1f)*0.1f)+0.9f;
+            double sin = Math.Abs(Math.Sin(gameTime.TotalGameTime.TotalSeconds * 2 * Math.PI * 0.4f)*0.3f)+0.9f;
             scale.X = scale.Y = (float)sin; 
             _tile.Scale = scale;
         }
