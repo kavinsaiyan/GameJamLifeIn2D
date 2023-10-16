@@ -1,4 +1,5 @@
 using System.IO;
+using System.Runtime.Serialization;
 using LifeIn2D.Entities;
 using Microsoft.Xna.Framework;
 
@@ -10,16 +11,28 @@ namespace LifeIn2D
         public const string FILE_PATH = "Text files/Levels.txt";
         public int[,] grid;
         public int currentLevel;
-        int rows, columns;
+        public int rows, columns;
         public int destinationsCount;
+        public int levelsCount = 0;
         public LevelLoadingState state = LevelLoadingState.None;
         public LevelLoader()
         {
             currentLevel = 1;
         }
 
+        public void LoadLevelCount()
+        {
+            using (StreamReader reader = new StreamReader(FILE_PATH))
+            {
+                string line;
+                if((line = reader.ReadLine())!= null)
+                {
+                   levelsCount = int.Parse(line.Replace("Count:","")) ;
+                }
+            }
+        }
 
-        public void Load()
+        public void LoadLevel()
         {
             using (StreamReader reader = new StreamReader(FILE_PATH))
             {
@@ -29,8 +42,11 @@ namespace LifeIn2D
                 // Read each line until the end of the file is reached
                 while ((line = reader.ReadLine()) != null)
                 {
-                    // Logger.Log("level laoder state " + state);
+                    // Logger.Log("level laor state " + state);
+                    if(line.Contains("Count:"))
+                    {
 
+                    }
                     // Process the line here (e.g., print it)
                     if (line.Equals("#####"))
                     {

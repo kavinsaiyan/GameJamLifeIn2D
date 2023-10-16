@@ -20,7 +20,8 @@ namespace LifeIn2D
 
         private InputManager _inputManager;
         private AudioManager _audioManager;
-        private LevelLoader _levelLoader;
+        private LevelInfo _levelInfo;
+        private int _currentLevel;
         private OrganTileManager _organTileManager;
         private TileScaleAnimation _tileScaleAnimation;
 
@@ -42,9 +43,8 @@ namespace LifeIn2D
         {
             _inputManager = new InputManager();
 
-            _levelLoader = new LevelLoader();
-            _levelLoader.currentLevel = 1;
-            _levelLoader.Load();
+            _levelInfo= new LevelInfo();
+            _currentLevel = 1;
 
             _gridManager = new GridManager();
             _gridManager.OnTileCreated += OnTileCreated;
@@ -83,7 +83,7 @@ namespace LifeIn2D
 
         private void InitializeLevelText()
         {
-            _displayAction = new TextDisplayAction(2, "Level " + _levelLoader.currentLevel, _jupiteroidFont,
+            _displayAction = new TextDisplayAction(2, "Level " + _currentLevel, _jupiteroidFont,
                             new Vector2(GraphicsDevice.Viewport.Width / 2 - 100, GraphicsDevice.Viewport.Height / 2 + 50),
                             Color.Black);
             _displayAction.OnComplete += OnTextDisplayComplete;
@@ -93,11 +93,10 @@ namespace LifeIn2D
         private void OnTextDisplayComplete()
         {
             _displayGame = true;
-            _levelLoader.Load();
 
-            _gridManager.grid = _levelLoader.grid;
+            _gridManager.grid = _levelInfo.LevelDatas[_currentLevel].grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    , _levelLoader.destinationsCount);
+                                    , _levelInfo.LevelDatas[_currentLevel].destinationsCount);
             _gridManager.FindPath();
 
             for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
@@ -127,7 +126,7 @@ namespace LifeIn2D
 
         private void OnPathFound()
         {
-            _levelLoader.currentLevel++;
+            _currentLevel++;
             _inputManager.RemoveAllButtons();
             InitalizeWaitForDelay();
         }
