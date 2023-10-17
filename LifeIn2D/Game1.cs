@@ -30,6 +30,7 @@ namespace LifeIn2D
         private WaitForDelayAction _waitForDelayAction;
         private SpriteFont _jupiteroidFont;
         private bool _displayGame = false;
+        private GameState _gameState;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -55,6 +56,8 @@ namespace LifeIn2D
             _timer = new Timer();
 
             _organTileManager = new OrganTileManager();
+
+            _gameState = GameState.HomeScreen;
             base.Initialize();
         }
 

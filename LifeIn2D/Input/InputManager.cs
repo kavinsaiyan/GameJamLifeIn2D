@@ -4,16 +4,16 @@ namespace LifeIn2D.Input
 {
     public class InputManager
     {
-        private List<SimpleButton> _simpleButtons;
+        private List<IButton> _simpleButtons;
 
         public InputManager()
         {
-            _simpleButtons = new List<SimpleButton>();
+            _simpleButtons = new List<IButton>();
         }
 
-        public void AddButton(SimpleButton simpleButton)
+        public void AddButton(IButton button)
         {
-            _simpleButtons.Add(simpleButton);
+            _simpleButtons.Add(button);
         }
 
         public void RemoveAllButtons()

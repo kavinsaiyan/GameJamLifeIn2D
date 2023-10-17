@@ -4,7 +4,7 @@ using SimplePhysics;
 
 namespace LifeIn2D.Input
 {
-    public class SimpleButton
+    public class SimpleButton : IButton
     {
         public Trigger trigger;
 
