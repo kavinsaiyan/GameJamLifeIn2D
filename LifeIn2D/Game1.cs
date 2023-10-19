@@ -8,6 +8,7 @@ using LifeIn2D.Main;
 using MonoGame.Extended;
 using LifeIn2D.Audio;
 using LifeIn2D.Entities;
+using LifeIn2D.Menu;
 
 namespace LifeIn2D
 {
@@ -29,8 +30,8 @@ namespace LifeIn2D
         private TextDisplayAction _displayAction;
         private WaitForDelayAction _waitForDelayAction;
         private SpriteFont _jupiteroidFont;
-        private bool _displayGame = false;
         private GameState _gameState;
+        private HomeScreen _homeScreen;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -44,7 +45,7 @@ namespace LifeIn2D
         {
             _inputManager = new InputManager();
 
-            _levelInfo= new LevelInfo();
+            _levelInfo = new LevelInfo();
             _currentLevel = 1;
 
             _gridManager = new GridManager();
@@ -58,6 +59,9 @@ namespace LifeIn2D
             _organTileManager = new OrganTileManager();
 
             _gameState = GameState.HomeScreen;
+            _homeScreen = new HomeScreen(Content, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
+            _homeScreen.OnPlayButtonClicked += OnPlayButtonClicked;
+            _homeScreen.OnExitButtonClicked += Exit;
             base.Initialize();
         }
 
@@ -67,7 +71,6 @@ namespace LifeIn2D
             _sprites = new Sprites(this);
             _audioManager = new AudioManager(Content);
             _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
-            InitializeLevelText();
         }
 
         private void InitalizeWaitForDelay()
@@ -81,7 +84,6 @@ namespace LifeIn2D
         {
             _gridManager.Reset();
             InitializeLevelText();
-            _displayGame = false;
         }
 
         private void InitializeLevelText()
@@ -91,11 +93,12 @@ namespace LifeIn2D
                             Color.Black);
             _displayAction.OnComplete += OnTextDisplayComplete;
             _timer.AddAction(_displayAction);
+            _gameState = GameState.LevelTextDisplay;
         }
 
         private void OnTextDisplayComplete()
         {
-            _displayGame = true;
+            _gameState = GameState.GamePlaying;
 
             _gridManager.grid = _levelInfo.LevelDatas[_currentLevel].grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
@@ -103,10 +106,10 @@ namespace LifeIn2D
             _gridManager.FindPath();
 
             for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
-               for(int j =0; j< _gridManager.tileGrid.GetLength(1); j++)
-                    if(_gridManager.tileGrid[i,j].Id == TileID.Heart)
+                for (int j = 0; j < _gridManager.tileGrid.GetLength(1); j++)
+                    if (_gridManager.tileGrid[i, j].Id == TileID.Heart)
                     {
-                        _tileScaleAnimation = new TileScaleAnimation(_gridManager.tileGrid[i,j]);
+                        _tileScaleAnimation = new TileScaleAnimation(_gridManager.tileGrid[i, j]);
                         break;
                     }
 
@@ -147,6 +150,12 @@ namespace LifeIn2D
             button.OnClick += _gridManager.FindPath;
         }
 
+        private void OnPlayButtonClicked()
+        {
+            _homeScreen.IsOpen = false;
+            InitializeLevelText();
+        }
+
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -160,7 +169,12 @@ namespace LifeIn2D
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
             _tileScaleAnimation?.Update(gameTime);
-
+            switch (_gameState)
+            {
+                case GameState.HomeScreen:
+                    _homeScreen.Update(gameTime);
+                    break;
+            }
             base.Update(gameTime);
         }
 
@@ -169,13 +183,20 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
-            if (_displayGame)
+            switch (_gameState)
             {
-                _gridManager.Draw(_sprites);
-                _organTileManager.Draw(_sprites);
-                // _inputManager.Draw(_sprites); // drawing debug button outline
+                case GameState.HomeScreen:
+                    _homeScreen.Draw(_sprites);
+                    break;
+                case GameState.LevelTextDisplay:
+                    _displayAction.Draw(_sprites);
+                    break;
+                case GameState.GamePlaying:
+                    _gridManager.Draw(_sprites);
+                    _organTileManager.Draw(_sprites);
+                    // _inputManager.Draw(_sprites); // drawing debug button outline
+                    break;
             }
-            _displayAction.Draw(_sprites);
             _sprites.End();
 
             base.Draw(gameTime);

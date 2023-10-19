@@ -4,6 +4,7 @@ namespace LifeIn2D
     {
         HomeScreen,
         LevelSelectionScreen,
-        Game,
+        GamePlaying,
+        LevelTextDisplay,
     }
 }

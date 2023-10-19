@@ -40,7 +40,7 @@ namespace LifeIn2D.Input
         public void Draw(Sprites sprites)
         {
             // trigger.Draw(sprites); // for debugging only
-            sprites.Draw(_texture, new Vector2(_texture.Width / 2, _texture.Height / 2), trigger.position, _color);
+            sprites.Draw(_texture, new Vector2(0), trigger.position, _color);
         }
 
         public void MoveTo(Vector2 amount)
