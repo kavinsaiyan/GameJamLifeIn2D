@@ -63,6 +63,8 @@ namespace LifeIn2D
             _homeScreen.OnPlayButtonClicked += OnPlayButtonClicked;
             _homeScreen.OnExitButtonClicked += Exit;
             base.Initialize();
+
+            LevelSaveData.Instance.Load();
         }
 
         protected override void LoadContent()
