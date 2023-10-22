@@ -35,8 +35,5 @@
     <None Update="Debugging/Logs.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <!-- <None Update="Savedata/LevelSaveData.dat">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None> -->
   </ItemGroup>
 </Project>

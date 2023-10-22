@@ -34,8 +34,8 @@ public abstract class BaseSaveData
 
     public void Load()
     {
-        string json = File.ReadAllText(GetFilePath());
-        if (string.IsNullOrEmpty(json) == false)
+        string text = File.ReadAllText(GetFilePath());
+        if (string.IsNullOrEmpty(text) == false)
         {
             BinaryFormatter binaryFormatter = new BinaryFormatter();
             using (FileStream memoryStream = File.OpenRead(GetFilePath()))

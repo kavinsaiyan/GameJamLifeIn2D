@@ -2,10 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using LifeIn2D.Input;
-using System.Collections.Generic;
-using System;
 using LifeIn2D.Main;
-using MonoGame.Extended;
 using LifeIn2D.Audio;
 using LifeIn2D.Entities;
 using LifeIn2D.Menu;
@@ -65,10 +62,6 @@ namespace LifeIn2D
             base.Initialize();
 
             LevelSaveData.Instance.Init();
-            Console.WriteLine("count :" + LevelSaveData.Instance.completedLevelCount);
-            LevelSaveData.Instance.completedLevelCount++;
-            Console.WriteLine("count : " + LevelSaveData.Instance.completedLevelCount);
-            LevelSaveData.Instance.Save();
         }
 
         protected override void LoadContent()
