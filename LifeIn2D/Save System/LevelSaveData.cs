@@ -1,8 +1,8 @@
 using System;
-
+[Serializable]
 public class LevelSaveData : BaseSaveData
 {
-    protected override string FileName => "LevelSaveData.json";
+    protected override string FileName => "LevelSaveData.dat";
     protected override Type Type => typeof(LevelSaveData);
 
     private static LevelSaveData _levelSaveData;
@@ -15,7 +15,6 @@ public class LevelSaveData : BaseSaveData
             return _levelSaveData;
         }
     }
-
     protected override object Data
     {
         get
@@ -29,4 +28,9 @@ public class LevelSaveData : BaseSaveData
     }
 
     public int completedLevelCount = 0;
+    public override void Init()
+    {
+        EnsureFileCreated();
+        Load();
+    }
 }

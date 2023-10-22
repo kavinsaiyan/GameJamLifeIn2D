@@ -64,7 +64,11 @@ namespace LifeIn2D
             _homeScreen.OnExitButtonClicked += Exit;
             base.Initialize();
 
-            LevelSaveData.Instance.Load();
+            LevelSaveData.Instance.Init();
+            Console.WriteLine("count :" + LevelSaveData.Instance.completedLevelCount);
+            LevelSaveData.Instance.completedLevelCount++;
+            Console.WriteLine("count : " + LevelSaveData.Instance.completedLevelCount);
+            LevelSaveData.Instance.Save();
         }
 
         protected override void LoadContent()
