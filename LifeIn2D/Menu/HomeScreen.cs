@@ -47,23 +47,5 @@ namespace LifeIn2D.Menu
             _isOpen = false;
             inputManager.RemoveAllButtons();
         }
-
-        // public void Update(GameTime gameTime)
-        // {
-        //     if (_isOpen)
-        //     {
-        //         _playButton.Update();
-        //         _exitButton.Update();
-        //     }
-        // }
-
-        // public void Draw(Sprites sprites)
-        // {
-        //     if (_isOpen)
-        //     {
-        //         _playButton.Draw(sprites);
-        //         _exitButton.Draw(sprites);
-        //     }
-        // }
     }
 }

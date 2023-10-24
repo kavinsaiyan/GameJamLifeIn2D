@@ -128,9 +128,15 @@ namespace LifeIn2D
         {
             _gameState = GameState.GamePlaying;
 
-            _gridManager.grid = _levelInfo.LevelDatas[_currentLevel].grid;
+            if(_currentLevel -1 < 0 || _currentLevel - 1 >= _levelInfo.LevelDatas.Count)
+            {
+                Logger.Instance.LogError("[Game1.cs/OnTextDisplayComplete]: _current level is out of bounds!");
+                return;
+            }
+
+            _gridManager.grid = _levelInfo.LevelDatas[_currentLevel-1].grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    , _levelInfo.LevelDatas[_currentLevel].destinationsCount);
+                                    , _levelInfo.LevelDatas[_currentLevel-1].destinationsCount);
             _gridManager.FindPath();
 
             for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
@@ -222,6 +228,7 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
+            _inputManager.Draw(_sprites);
             switch (_gameState)
             {
                 case GameState.LevelTextDisplay:
@@ -230,7 +237,6 @@ namespace LifeIn2D
                 case GameState.GamePlaying:
                     _gridManager.Draw(_sprites);
                     _organTileManager.Draw(_sprites);
-                    _inputManager.Draw(_sprites);
                     break;
             }
             _sprites.End();

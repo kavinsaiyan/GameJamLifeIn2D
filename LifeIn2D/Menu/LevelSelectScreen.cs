@@ -26,8 +26,8 @@ namespace LifeIn2D
             LevelSaveData.Instance.InitializeSaveItems(_levelsCount);
 
             //load the textures and font
-            Texture2D buttonTexture = contentManager.Load<Texture2D>("");
-            Texture2D lockTexture = contentManager.Load<Texture2D>("");
+            Texture2D buttonTexture = contentManager.Load<Texture2D>("Buttons/Level_Button");
+            Texture2D lockTexture = contentManager.Load<Texture2D>("Buttons/Lock");
             SpriteFont font = contentManager.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
 
             //create the cards
@@ -36,26 +36,29 @@ namespace LifeIn2D
             int buttonSize = buttonTexture.Width / 2 + buttonTexture.Height / 2;
             int rowCount = _levelsCount / 2;
             int rows = rowCount;
-            Vector2 cardStartPos = new Vector2(halfScreenWidth, halfScreenHeight);
+            Vector2 cardStartPos = new Vector2(halfScreenWidth - buttonSize * _levelsCount/2, halfScreenHeight + buttonSize );
             float x = 0, y = 0;
             for (int i = 0; i < _levelsCount; i++)
             {
                 Vector2 pos = new Vector2(cardStartPos.X + x, cardStartPos.Y + y);
 
                 TexturedButton texturedButton = new TexturedButton(buttonTexture.Width, buttonTexture.Height, pos, buttonTexture);
-                texturedButton.OnClick += delegate { OnLevelCardClicked(i + 1); };
+                int k = i + 1;
+                texturedButton.OnClick += delegate { OnLevelCardClicked(k); };
 
                 LevelCard levelCard = new LevelCard(lockTexture, font, texturedButton, i + 1);
                 if (LevelSaveData.Instance.TryGetSaveItem(i + 1, out LevelSaveItem levelSaveItem))
                     levelCard.LevelState = levelSaveItem.levelState;
+                else 
+                    Logger.Instance.Log("save data not found for "+(i+1));
                 _levelCards.Add(levelCard);
 
                 x += buttonSize * 2;
-                if (i > rows)
+                if (i >= rows)
                 {
                     rows += rowCount;
                     x = 0;
-                    y += buttonSize * 2;
+                    y -= buttonSize * 2;
                 }
             }
         }
@@ -77,25 +80,5 @@ namespace LifeIn2D
         {
             OnLevelSelected?.Invoke(levelNumber);
         }
-
-        // public void Update()
-        // {
-        //     if (_isOpen == false)
-        //         return;
-        //     for (int i = 0; i < _levelsCount; i++)
-        //     {
-        //         _levelCards[i].Update();
-        //     }
-        // }
-
-        // public void Draw(Sprites sprites)
-        // {
-        //     if (_isOpen == false)
-        //         return;
-        //     for (int i = 0; i < _levelsCount; i++)
-        //     {
-        //         _levelCards[i].Draw(sprites);
-        //     }
-        // }
     }
 }

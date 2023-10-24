@@ -27,7 +27,6 @@ namespace LifeIn2D.Input
 
         public void Draw(Sprites sprites)
         {
-            trigger.Draw(sprites);
         }
 
         public void MoveTo(Vector2 amount)
