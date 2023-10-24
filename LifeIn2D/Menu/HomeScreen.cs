@@ -10,7 +10,7 @@ namespace LifeIn2D.Menu
         private TexturedButton _playButton;
         private TexturedButton _exitButton;
         private bool _isOpen;
-        public bool IsOpen { get => _isOpen; set => _isOpen = value; }
+        public bool IsOpen { get => _isOpen; }
         public event Action OnPlayButtonClicked;
         public event Action OnExitButtonClicked;
         public HomeScreen(ContentManager contentManager, int screenWidth, int screenHeight)
@@ -36,22 +36,34 @@ namespace LifeIn2D.Menu
             OnExitButtonClicked?.Invoke();
         }
 
-        public void Update(GameTime gameTime)
+        public void Open(InputManager inputManager)
         {
-            if (_isOpen)
-            {
-                _playButton.Update();
-                _exitButton.Update();
-            }
+            _isOpen = true;
+            inputManager.AddButton(_playButton);
+            inputManager.AddButton(_exitButton);
+        }
+        public void Close(InputManager inputManager)
+        {
+            _isOpen = false;
+            inputManager.RemoveAllButtons();
         }
 
-        public void Draw(Sprites sprites)
-        {
-            if (_isOpen)
-            {
-                _playButton.Draw(sprites);
-                _exitButton.Draw(sprites);
-            }
-        }
+        // public void Update(GameTime gameTime)
+        // {
+        //     if (_isOpen)
+        //     {
+        //         _playButton.Update();
+        //         _exitButton.Update();
+        //     }
+        // }
+
+        // public void Draw(Sprites sprites)
+        // {
+        //     if (_isOpen)
+        //     {
+        //         _playButton.Draw(sprites);
+        //         _exitButton.Draw(sprites);
+        //     }
+        // }
     }
 }

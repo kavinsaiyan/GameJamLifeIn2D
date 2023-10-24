@@ -402,3 +402,6 @@ FodyWeavers.xsd
 
 #lock file for doc
 LifeIn2D/Docs/.~lock.LifeIn2D Level Design helper.odt#
+
+#save data
+*.dat

@@ -29,11 +29,14 @@ namespace LifeIn2D
         private SpriteFont _jupiteroidFont;
         private GameState _gameState;
         private HomeScreen _homeScreen;
+        private LevelSelectScreen _levelSelectScreen;
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.PreferredBackBufferWidth = 800;
-            _graphics.PreferredBackBufferHeight = 600;
+            _graphics = new GraphicsDeviceManager(this)
+            {
+                PreferredBackBufferWidth = 800,
+                PreferredBackBufferHeight = 600
+            };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -43,6 +46,9 @@ namespace LifeIn2D
             _inputManager = new InputManager();
 
             _levelInfo = new LevelInfo();
+            _levelSelectScreen = new LevelSelectScreen(_levelInfo, GraphicsDevice.Viewport.Width,
+                                                              GraphicsDevice.Viewport.Height, Content);
+            _levelSelectScreen.OnLevelSelected += OnLevelSelected;
             _currentLevel = 1;
 
             _gridManager = new GridManager();
@@ -55,10 +61,12 @@ namespace LifeIn2D
 
             _organTileManager = new OrganTileManager();
 
+
             _gameState = GameState.HomeScreen;
             _homeScreen = new HomeScreen(Content, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             _homeScreen.OnPlayButtonClicked += OnPlayButtonClicked;
             _homeScreen.OnExitButtonClicked += Exit;
+            _homeScreen.Open(_inputManager);
             base.Initialize();
 
             LevelSaveData.Instance.Init();
@@ -71,7 +79,7 @@ namespace LifeIn2D
             _audioManager = new AudioManager(Content);
             _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
         }
-
+        #region End Level Delay
         private void InitalizeWaitForDelay()
         {
             _waitForDelayAction = new WaitForDelayAction(2);
@@ -82,9 +90,30 @@ namespace LifeIn2D
         private void OnDelayComplete()
         {
             _gridManager.Reset();
-            InitializeLevelText();
-        }
+            if (_currentLevel + 1 >= _levelInfo.LevelDatas.Count)
+            {
+                InitializeLevelSelectScreen();
+                return;
+            }
 
+            LevelSaveData.Instance.Load();
+            if (LevelSaveData.Instance.TryGetSaveItem(_currentLevel + 1, out LevelSaveItem nextLevelSaveItem))
+            {
+                if (nextLevelSaveItem.levelState == LevelState.Playable)
+                {
+                    InitializeLevelSelectScreen();
+                    return;
+                }
+                else
+                {
+                    nextLevelSaveItem.levelState = LevelState.Playable;
+                    _currentLevel++;
+                    InitializeLevelText();
+                }
+            }
+        }
+        #endregion
+        #region Level Number Text
         private void InitializeLevelText()
         {
             _displayAction = new TextDisplayAction(2, "Level " + _currentLevel, _jupiteroidFont,
@@ -114,6 +143,7 @@ namespace LifeIn2D
 
             InitalizeOrganTileManager();
         }
+        #endregion
 
         private void InitalizeOrganTileManager()
         {
@@ -131,7 +161,6 @@ namespace LifeIn2D
 
         private void OnPathFound()
         {
-            _currentLevel++;
             _inputManager.RemoveAllButtons();
             InitalizeWaitForDelay();
         }
@@ -148,12 +177,28 @@ namespace LifeIn2D
             button.OnClick += _audioManager.PlayClickSound;
             button.OnClick += _gridManager.FindPath;
         }
-
+#region Home screen
         private void OnPlayButtonClicked()
         {
-            _homeScreen.IsOpen = false;
+            _homeScreen.Close(_inputManager);
+            InitializeLevelSelectScreen();
+        }
+#endregion
+
+#region Level Select Screen    
+        private void InitializeLevelSelectScreen()
+        {
+            _gameState = GameState.LevelSelectionScreen;
+            _levelSelectScreen.Open(_inputManager);
+        }
+
+        private void OnLevelSelected(int level)
+        {
+            _levelSelectScreen.Close(_inputManager);
+            _currentLevel = level;
             InitializeLevelText();
         }
+#endregion
 
         protected override void Update(GameTime gameTime)
         {
@@ -168,12 +213,7 @@ namespace LifeIn2D
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
             _tileScaleAnimation?.Update(gameTime);
-            switch (_gameState)
-            {
-                case GameState.HomeScreen:
-                    _homeScreen.Update(gameTime);
-                    break;
-            }
+
             base.Update(gameTime);
         }
 
@@ -184,16 +224,13 @@ namespace LifeIn2D
             _sprites.Begin(false);
             switch (_gameState)
             {
-                case GameState.HomeScreen:
-                    _homeScreen.Draw(_sprites);
-                    break;
                 case GameState.LevelTextDisplay:
                     _displayAction.Draw(_sprites);
                     break;
                 case GameState.GamePlaying:
                     _gridManager.Draw(_sprites);
                     _organTileManager.Draw(_sprites);
-                    // _inputManager.Draw(_sprites); // drawing debug button outline
+                    _inputManager.Draw(_sprites);
                     break;
             }
             _sprites.End();
