@@ -28,7 +28,7 @@ namespace LifeIn2D
             //load the textures and font
             Texture2D buttonTexture = contentManager.Load<Texture2D>("Buttons/Level_Button");
             Texture2D lockTexture = contentManager.Load<Texture2D>("Buttons/Lock");
-            SpriteFont font = contentManager.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
+            SpriteFont font = contentManager.Load<SpriteFont>("Fonts/Unitblock");
 
             //create the cards
             int halfScreenWidth = screenWidth / 2;

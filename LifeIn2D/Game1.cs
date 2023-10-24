@@ -129,15 +129,15 @@ namespace LifeIn2D
         {
             _gameState = GameState.GamePlaying;
 
-            if(_currentLevel -1 < 0 || _currentLevel - 1 >= _levelInfo.LevelDatas.Count)
+            if (_currentLevel - 1 < 0 || _currentLevel - 1 >= _levelInfo.LevelDatas.Count)
             {
                 Logger.Instance.LogError("[Game1.cs/OnTextDisplayComplete]: _current level is out of bounds!");
                 return;
             }
 
-            _gridManager.grid = _levelInfo.LevelDatas[_currentLevel-1].grid;
+            _gridManager.grid = _levelInfo.LevelDatas[_currentLevel - 1].grid;
             _gridManager.Initialize(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height, Content
-                                    , _levelInfo.LevelDatas[_currentLevel-1].destinationsCount);
+                                    , _levelInfo.LevelDatas[_currentLevel - 1].destinationsCount);
             _gridManager.FindPath();
 
             for (int i = 0; i < _gridManager.tileGrid.GetLength(0); i++)
@@ -184,15 +184,15 @@ namespace LifeIn2D
             button.OnClick += _audioManager.PlayClickSound;
             button.OnClick += _gridManager.FindPath;
         }
-#region Home screen
+        #region Home screen
         private void OnPlayButtonClicked()
         {
             _homeScreen.Close(_inputManager);
             InitializeLevelSelectScreen();
         }
-#endregion
+        #endregion
 
-#region Level Select Screen    
+        #region Level Select Screen    
         private void InitializeLevelSelectScreen()
         {
             _gameState = GameState.LevelSelectionScreen;
@@ -205,7 +205,7 @@ namespace LifeIn2D
             _currentLevel = level;
             InitializeLevelText();
         }
-#endregion
+        #endregion
 
         protected override void Update(GameTime gameTime)
         {
@@ -214,14 +214,23 @@ namespace LifeIn2D
 
             CustomMouse.Instance.Update();
             CustomKeyboard.Instance.Update();
-            if (CustomKeyboard.Instance.IsKeyClicked(Keys.F))
-                _gridManager.FindPath();
-            _gridManager.Update(gameTime);
             _inputManager.Update();
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
-            _tileScaleAnimation?.Update(gameTime);
+            switch (_gameState)
+            {
+                case GameState.LevelTextDisplay:
 
-            _levelSelectScreen.Update();
+                    break;
+                case GameState.GamePlaying:
+                    _tileScaleAnimation?.Update(gameTime);
+                    if (CustomKeyboard.Instance.IsKeyClicked(Keys.F))
+                        _gridManager.FindPath();
+                    _gridManager.Update(gameTime);
+                    break;
+                case GameState.LevelSelectionScreen:
+                    _levelSelectScreen.Update();
+                    break;
+            }
 
             base.Update(gameTime);
         }
