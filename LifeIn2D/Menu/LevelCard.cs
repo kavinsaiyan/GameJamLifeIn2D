@@ -48,10 +48,10 @@ namespace LifeIn2D.Menu
             _button.Draw(sprites);
             switch (_levelState)
             {
-                case LevelState.Locked:
-                    sprites.DrawString(_spriteFont, _levelNumber.ToString(), _button.trigger.position, Color.Black, 1);
-                    break;
                 case LevelState.Playable:
+                    sprites.DrawString(_spriteFont, _levelNumber.ToString(), _button.trigger.position + new Vector2(_button.trigger.width/4,0), Color.Black, 3);
+                    break;
+                case LevelState.Locked:
                     sprites.Draw(_lockIcon,Vector2.Zero, _button.trigger.position,Color.White);
                     break;
             }

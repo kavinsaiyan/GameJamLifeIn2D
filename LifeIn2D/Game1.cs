@@ -107,6 +107,7 @@ namespace LifeIn2D
                 else
                 {
                     nextLevelSaveItem.levelState = LevelState.Playable;
+                    LevelSaveData.Instance.Save();
                     _currentLevel++;
                     InitializeLevelText();
                 }
@@ -220,6 +221,8 @@ namespace LifeIn2D
             _timer.Update(gameTime.ElapsedGameTime.TotalSeconds);
             _tileScaleAnimation?.Update(gameTime);
 
+            _levelSelectScreen.Update();
+
             base.Update(gameTime);
         }
 
@@ -237,6 +240,9 @@ namespace LifeIn2D
                 case GameState.GamePlaying:
                     _gridManager.Draw(_sprites);
                     _organTileManager.Draw(_sprites);
+                    break;
+                case GameState.LevelSelectionScreen:
+                    _levelSelectScreen.Draw(_sprites);
                     break;
             }
             _sprites.End();

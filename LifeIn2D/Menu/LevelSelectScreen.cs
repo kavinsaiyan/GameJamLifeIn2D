@@ -36,7 +36,7 @@ namespace LifeIn2D
             int buttonSize = buttonTexture.Width / 2 + buttonTexture.Height / 2;
             int rowCount = _levelsCount / 2;
             int rows = rowCount;
-            Vector2 cardStartPos = new Vector2(halfScreenWidth - buttonSize * _levelsCount/2, halfScreenHeight + buttonSize );
+            Vector2 cardStartPos = new Vector2(halfScreenWidth - buttonSize * _levelsCount / 2, halfScreenHeight + buttonSize);
             float x = 0, y = 0;
             for (int i = 0; i < _levelsCount; i++)
             {
@@ -49,8 +49,8 @@ namespace LifeIn2D
                 LevelCard levelCard = new LevelCard(lockTexture, font, texturedButton, i + 1);
                 if (LevelSaveData.Instance.TryGetSaveItem(i + 1, out LevelSaveItem levelSaveItem))
                     levelCard.LevelState = levelSaveItem.levelState;
-                else 
-                    Logger.Instance.Log("save data not found for "+(i+1));
+                else
+                    Logger.Instance.Log("save data not found for " + (i + 1));
                 _levelCards.Add(levelCard);
 
                 x += buttonSize * 2;
@@ -66,19 +66,33 @@ namespace LifeIn2D
         public void Open(InputManager inputManager)
         {
             _isOpen = true;
-            for (int i = 0; i < _levelCards.Count; i++)
-            {
-                inputManager.AddButton(_levelCards[i].Button);
-            }
         }
         public void Close(InputManager inputManager)
         {
             _isOpen = false;
-            inputManager.RemoveAllButtons();
         }
         private void OnLevelCardClicked(int levelNumber)
         {
             OnLevelSelected?.Invoke(levelNumber);
+        }
+        public void Update()
+        {
+            if (_isOpen == false)
+                return;
+            for (int i = 0; i < _levelsCount; i++)
+            {
+                _levelCards[i].Update();
+            }
+        }
+
+        public void Draw(Sprites sprites)
+        {
+            if (_isOpen == false)
+                return;
+            for (int i = 0; i < _levelsCount; i++)
+            {
+                _levelCards[i].Draw(sprites);
+            }
         }
     }
 }
