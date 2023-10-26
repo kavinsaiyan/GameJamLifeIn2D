@@ -12,14 +12,13 @@ namespace LifeIn2D
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
         private Sprites _sprites;
         private GridManager _gridManager;
-
         private InputManager _inputManager;
         private AudioManager _audioManager;
         private LevelInfo _levelInfo;
         private int _currentLevel;
+        private Texture2D _backGround;
         private OrganTileManager _organTileManager;
         private TileScaleAnimation _tileScaleAnimation;
 
@@ -45,12 +44,6 @@ namespace LifeIn2D
         {
             _inputManager = new InputManager();
 
-            _levelInfo = new LevelInfo();
-            _levelSelectScreen = new LevelSelectScreen(_levelInfo, GraphicsDevice.Viewport.Width,
-                                                              GraphicsDevice.Viewport.Height, Content);
-            _levelSelectScreen.OnLevelSelected += OnLevelSelected;
-            _currentLevel = 1;
-
             _gridManager = new GridManager();
             _gridManager.OnTileCreated += OnTileCreated;
             _gridManager.OnPathFound += OnPathFound;
@@ -61,23 +54,30 @@ namespace LifeIn2D
 
             _organTileManager = new OrganTileManager();
 
+            LevelSaveData.Instance.Init();
+
+            base.Initialize();
+        }
+
+        protected override void LoadContent()
+        {
+            _sprites = new Sprites(this);
+            _audioManager = new AudioManager(Content);
+            _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
+
+            _levelInfo = new LevelInfo();
+            _levelSelectScreen = new LevelSelectScreen(_levelInfo, GraphicsDevice.Viewport.Width,
+                                                              GraphicsDevice.Viewport.Height, Content);
+            _levelSelectScreen.OnLevelSelected += OnLevelSelected;
+            _currentLevel = 1;
 
             _gameState = GameState.HomeScreen;
             _homeScreen = new HomeScreen(Content, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height);
             _homeScreen.OnPlayButtonClicked += OnPlayButtonClicked;
             _homeScreen.OnExitButtonClicked += Exit;
             _homeScreen.Open(_inputManager);
-            base.Initialize();
 
-            LevelSaveData.Instance.Init();
-        }
-
-        protected override void LoadContent()
-        {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-            _sprites = new Sprites(this);
-            _audioManager = new AudioManager(Content);
-            _jupiteroidFont = Content.Load<SpriteFont>("Fonts/JupiteroidRegular-Rpj6V");
+            _backGround = Content.Load<Texture2D>("LifeIn2D_BG");
         }
         #region End Level Delay
         private void InitalizeWaitForDelay()
@@ -240,13 +240,18 @@ namespace LifeIn2D
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             _sprites.Begin(false);
-            _inputManager.Draw(_sprites);
+            _sprites.Draw(_backGround, new Vector2(_backGround.Width / 2, _backGround.Height / 2),
+                        new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
             switch (_gameState)
             {
+                case GameState.HomeScreen:
+                    _inputManager.Draw(_sprites);
+                    break;
                 case GameState.LevelTextDisplay:
                     _displayAction.Draw(_sprites);
                     break;
                 case GameState.GamePlaying:
+                    _inputManager.Draw(_sprites);
                     _gridManager.Draw(_sprites);
                     _organTileManager.Draw(_sprites);
                     break;
