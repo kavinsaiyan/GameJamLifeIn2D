@@ -241,7 +241,7 @@ namespace LifeIn2D
 
             _sprites.Begin(false);
             _sprites.Draw(_backGround, new Vector2(_backGround.Width / 2, _backGround.Height / 2),
-                        new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White);
+                        new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height / 2), Color.White,);
             switch (_gameState)
             {
                 case GameState.HomeScreen:
