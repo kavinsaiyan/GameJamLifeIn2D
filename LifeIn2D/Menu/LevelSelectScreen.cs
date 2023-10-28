@@ -34,7 +34,7 @@ namespace LifeIn2D
             int halfScreenWidth = screenWidth / 2;
             int halfScreenHeight = screenHeight / 2;
             int buttonSize = buttonTexture.Width / 2 + buttonTexture.Height / 2;
-            int rowCount = _levelsCount / 2;
+            int rowCount = _levelsCount / 3;
             int rows = rowCount;
             Vector2 cardStartPos = new Vector2(halfScreenWidth - buttonSize * _levelsCount / 2, halfScreenHeight + buttonSize);
             float x = 0, y = 0;
