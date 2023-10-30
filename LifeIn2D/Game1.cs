@@ -90,7 +90,7 @@ namespace LifeIn2D
         private void OnDelayComplete()
         {
             _gridManager.Reset();
-            if (_currentLevel + 1 >= _levelInfo.LevelDatas.Count)
+            if (_currentLevel + 1 > _levelInfo.LevelDatas.Count)
             {
                 InitializeLevelSelectScreen();
                 return;
