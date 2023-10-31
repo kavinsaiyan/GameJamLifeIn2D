@@ -42,12 +42,7 @@ namespace LifeIn2D
                 // Read each line until the end of the file is reached
                 while ((line = reader.ReadLine()) != null)
                 {
-                    // Logger.Log("level laor state " + state);
-                    if(line.Contains("Count:"))
-                    {
-
-                    }
-                    // Process the line here (e.g., print it)
+                    // Logger.Instance.Log("level laor state " + state);
                     if (line.Equals("#####"))
                     {
                         state = LevelLoadingState.Header;
@@ -84,6 +79,7 @@ namespace LifeIn2D
                     if (state == LevelLoadingState.LevelContent && levelContentReadCount < rows)
                     {
                         string[] split = line.Split(",", columns);
+                        // Logger.Instance.Log("split count "+split.Length);
                         for (int i = 0; i < columns; i++)
                         {
                             if (int.TryParse(split[i], out int tileValue))
@@ -94,7 +90,7 @@ namespace LifeIn2D
                         levelContentReadCount++;
                         if (levelContentReadCount == rows)
                         {
-                            // Logger.Log("level loader loaded level " + currentLevel);
+                            // Logger.Instance.Log("level loader loaded level " + currentLevel);
                             state = LevelLoadingState.Done;
                             break;
                         }
