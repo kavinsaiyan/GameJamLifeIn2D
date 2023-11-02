@@ -47,8 +47,8 @@ public class LevelSaveData : BaseSaveData
             if (levelSaveItems.Count < i + 1)
             {
                 LevelSaveItem levelSaveItem = new LevelSaveItem() { levelNumber = i + 1, levelState = LevelState.Locked };
-                // if (i == 0 || i == 12)
-                if (i == 0)
+                // if (i == 0 || i == 14)
+                if (i == 0 )
                     levelSaveItem.levelState = LevelState.Playable;
                 levelSaveItems.Add(levelSaveItem);
                 addedNewSaveItem = true;
