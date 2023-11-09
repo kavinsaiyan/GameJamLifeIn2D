@@ -34,7 +34,7 @@ namespace LifeIn2D
             _graphics = new GraphicsDeviceManager(this)
             {
                 PreferredBackBufferWidth = 800,
-                PreferredBackBufferHeight = 600
+                PreferredBackBufferHeight = 800
             };
             Content.RootDirectory = "Content";
             IsMouseVisible = true;

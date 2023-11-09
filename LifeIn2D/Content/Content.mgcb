@@ -19,6 +19,12 @@
 /processorParam:Quality=Best
 /build:Audio/ClickTile.wav
 
+#begin Audio/BGTrack.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Audio/BGTrack.wav
+
 #begin Brain_Tile.png
 /importer:TextureImporter
 /processor:TextureProcessor
