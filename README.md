@@ -4,6 +4,8 @@
 
 Welcome to the Blood Flow Puzzle Game, a captivating puzzle experience where you control the body's circulatory system! Connect the tiles in a grid to supply blood from the heart to all the organs. This open-source project, created using the Monogame framework in C#, offers 25 levels of strategic and engaging gameplay.
 
+![life in 2d 3rd level](https://github.com/kavinsaiyan/GameJamLifeIn2D/assets/37509336/7620b530-6751-4f6f-baf9-fbea040fa307)
+
 ## Features
 
 - **Connective Challenge:** Strategically connect tiles to ensure the efficient flow of blood throughout the body's organs.
@@ -29,7 +31,7 @@ Make sure you have the following installed:
 2. Open the project in Visual Studio.
 3. Build and run the game.
 
-## Gameplay Instructions![life in 2d 3rd level](https://github.com/kavinsaiyan/GameJamLifeIn2D/assets/37509336/7620b530-6751-4f6f-baf9-fbea040fa307)
+## Gameplay Instructions
 
 
 1. **Objective:** Connect the heart to all the organs by placing tiles strategically.
